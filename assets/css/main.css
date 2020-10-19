@@ -2303,7 +2303,10 @@ input, select, textarea {
 			}
 
 			#main section.cover {
-				padding: 5em 0;
+    padding-top: 400px;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 5em;
 			}
 
 	}
