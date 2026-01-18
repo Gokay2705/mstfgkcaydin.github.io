@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>404 • Page not found</title>
+<title>404 • Ooops</title>
 
 <style>
   :root{
@@ -43,16 +43,15 @@
   }
 
   h1{
-    margin:0 0 10px;
+    margin:0 0 12px;
     font-size:clamp(34px,4.6vw,64px);
     letter-spacing:-.02em;
   }
   p{
     margin:0 0 26px;
     color:var(--muted);
-    font-size:16px;
+    font-size:14px;
     line-height:1.55;
-    max-width:100ch;
   }
 
   .scene{
@@ -64,7 +63,16 @@
     overflow:hidden;
   }
 
-  /* --- Water line + water --- */
+  /* Icebergs */
+  .icebergs{
+    position:absolute;
+    inset:0;
+    opacity:.42;
+    pointer-events:none;
+  }
+  .icebergs svg{width:100%;height:100%}
+
+  /* Water line + water (moved DOWN so bear/penguins stay on ice) */
   .horizon{
     position:absolute;
     left:0; right:0;
@@ -79,77 +87,44 @@
     background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
   }
 
-  /* --- Icebergs --- */
-  .icebergs{
-    position:absolute;
-    inset:0;
-    opacity:.40;
-    pointer-events:none;
-  }
-  .icebergs svg{width:100%;height:100%}
-
-  /* --- Penguins: stand on ice (above horizon) --- */
-  .penguin{
-    position:absolute;
-    top:210px; /* sits just above horizon */
-    width:54px;
-    height:80px;
-    transform-origin: 50% 100%;
-    animation: waddle 2.2s ease-in-out infinite;
-  }
-  .penguin.p1{ left:58%; animation-delay:0s; }
-  .penguin.p2{ left:65%; animation-delay:.4s; }
-  .penguin.p3{ left:72%; animation-delay:.8s; }
-
-  @keyframes waddle{
-    0%,100%{ transform: translateY(0) rotate(-2deg); }
-    50%{ transform: translateY(-3px) rotate(2deg); }
-  }
-
-  /* --- Bear + basket: between rod handle and sea level --- */
+  /* Bear + basket placed on ice between rod and sea level */
   .bearwrap{
     position:absolute;
-    left:130px;
-    top:170px;  /* between rod handle and horizon */
+    left:160px;
+    top:170px;
     display:flex;
     align-items:flex-end;
-    gap:14px;
+    gap:16px;
     filter: drop-shadow(0 18px 28px rgba(0,0,0,.45));
   }
-
   .bear{
-    width:150px;
-    height:150px;
+    width:170px;
+    height:170px;
     animation: bearFloat 4s ease-in-out infinite;
   }
   @keyframes bearFloat{
     0%,100%{ transform: translateY(0); }
     50%{ transform: translateY(-6px); }
   }
+  .basket{ width:92px; height:72px; opacity:.95; }
 
-  .basket{
-    width:86px;
-    height:66px;
-    opacity:.95;
-  }
-
-  /* --- Rod + cast cycle: drop -> wait 5s -> pull --- */
+  /* Rod + cast cycle: drop -> wait 5s -> pull */
   .rod{
     position:absolute;
-    left:150px;
-    top:170px;
-    width:160px;
+    left:185px;
+    top:165px;
+    width:185px;
     height:6px;
     border-radius:999px;
     background:rgba(255,255,255,.30);
     transform:rotate(14deg);
     transform-origin:left center;
+    opacity:.9;
   }
-
   .line{
     position:absolute;
-    left:288px;  /* rod tip-ish */
-    top:178px;
+    left:338px;
+    top:174px;
     width:2px;
     height:0;
     background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
@@ -158,8 +133,8 @@
   }
   .hook{
     position:absolute;
-    left:284px;
-    top:178px;
+    left:334px;
+    top:174px;
     width:12px;height:12px;
     border:2px solid rgba(255,255,255,.85);
     border-top-color:transparent;
@@ -173,42 +148,83 @@
   /* 8s total: 0-1s drop, 1-6s wait, 6-7s pull, 7-8s reset */
   @keyframes castLine{
     0%{ height:18px; opacity:.70; }
-    12.5%{ height:220px; opacity:1; } /* reaches water */
-    75%{ height:220px; opacity:1; }   /* 5s wait */
+    12.5%{ height:240px; opacity:1; } /* reaches water */
+    75%{ height:240px; opacity:1; }   /* 5s wait */
     87.5%{ height:18px; opacity:.80; }
     100%{ height:18px; opacity:.70; }
   }
   @keyframes castHook{
     0%{ transform: translateY(0) rotate(25deg); opacity:.70; }
-    12.5%{ transform: translateY(220px) rotate(25deg); opacity:1; }
-    75%{ transform: translateY(220px) rotate(25deg); opacity:1; }
+    12.5%{ transform: translateY(240px) rotate(25deg); opacity:1; }
+    75%{ transform: translateY(240px) rotate(25deg); opacity:1; }
     87.5%{ transform: translateY(0) rotate(25deg); opacity:.85; }
     100%{ transform: translateY(0) rotate(25deg); opacity:.70; }
   }
 
-  /* --- Fish: oscillate (3s back, 5s forward) and flip direction --- */
+  /* Fish: 5s forward (LEFT), 3s back (RIGHT) + flip direction */
   .fish{
     position:absolute;
-    top:305px; /* inside water */
-    left:60%;
-    width:86px;
+    top:330px;               /* water zone */
+    left:62%;
+    width:90px;
     filter: drop-shadow(0 12px 16px rgba(0,0,0,.35));
     animation: fishSwim 8s linear infinite;
     transform-origin: 50% 50%;
   }
-
-  /* Forward = to the LEFT for 5s, Back = to the RIGHT for 3s */
   @keyframes fishSwim{
-    /* start moving LEFT (face left) */
-    0%   { transform: translateX(240px) scaleX(1); }
-    62.5%{ transform: translateX(-260px) scaleX(1); }  /* 5s forward */
-
-    /* go back RIGHT (flip to face right) */
-    62.5001%{ transform: translateX(-260px) scaleX(-1); }
-    100% { transform: translateX(240px) scaleX(-1); }  /* 3s back */
+    0%   { transform: translateX(260px) scaleX(1); }      /* face left */
+    62.5%{ transform: translateX(-290px) scaleX(1); }     /* 5s forward */
+    62.5001%{ transform: translateX(-290px) scaleX(-1); } /* flip */
+    100% { transform: translateX(260px) scaleX(-1); }     /* 3s back */
   }
 
-  /* --- Buttons corners --- */
+  /* Penguins group: they move together (so they don't drift apart) */
+  .penguin-group{
+    position:absolute;
+    top:190px;     /* above horizon */
+    left:60%;
+    width:230px;
+    height:120px;
+    transform: translateX(-50%);
+    animation: groupDrift 7s ease-in-out infinite;
+    pointer-events:none;
+  }
+  /* move right-left but keep tight range */
+  @keyframes groupDrift{
+    0%,100%{ transform: translateX(-50%) translateX(-18px); }
+    50%{ transform: translateX(-50%) translateX(18px); }
+  }
+
+  .penguin{
+    position:absolute;
+    bottom:0;
+    width:60px;
+    height:90px;
+    transform-origin: 50% 100%;
+    animation: penguinWaddle 1.8s ease-in-out infinite, penguinSpin 9s linear infinite, penguinHop 2.4s ease-in-out infinite;
+  }
+  .penguin.p1{ left:10px;  animation-delay:0s, 0s, .2s; }
+  .penguin.p2{ left:85px;  animation-delay:.35s, .8s, 0s; }
+  .penguin.p3{ left:160px; animation-delay:.7s, 1.6s, .35s; }
+
+  /* little walk (feet sway) */
+  @keyframes penguinWaddle{
+    0%,100%{ transform: translateX(0) rotate(-4deg); }
+    50%{ transform: translateX(0) rotate(4deg); }
+  }
+  /* random-ish rotate around themselves (small) */
+  @keyframes penguinSpin{
+    0%{ filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); }
+    50%{ filter: drop-shadow(0 12px 16px rgba(0,0,0,.40)); }
+    100%{ filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); }
+  }
+  /* hop */
+  @keyframes penguinHop{
+    0%,100%{ translate: 0 0; }
+    50%{ translate: 0 -6px; }
+  }
+
+  /* Buttons corners */
   .actions{
     display:flex;
     justify-content:space-between;
@@ -240,14 +256,14 @@
   @media(max-width:980px){
     .card{padding:28px 22px}
     .scene{height:360px}
-    .horizon{top:230px}
-    .water{top:230px}
-    .penguin{top:185px}
-    .bearwrap{left:110px; top:140px}
-    .rod{left:130px; top:140px; width:150px}
-    .line{left:250px; top:148px}
-    .hook{left:246px; top:148px}
-    .fish{top:270px}
+    .horizon{top:250px}
+    .water{top:250px}
+    .bearwrap{left:120px; top:145px}
+    .rod{left:145px; top:140px; width:165px}
+    .line{left:285px; top:150px}
+    .hook{left:281px; top:150px}
+    .fish{top:290px}
+    .penguin-group{top:155px; left:66%;}
   }
   @media(max-width:560px){
     .actions{flex-direction:column}
@@ -261,12 +277,11 @@
 
 <body>
 <section class="card">
-  <h1>Oops — this page doesn’t exist.</h1>
-  <p>The URL might be wrong, the page may have moved, or we can’t find the correct file.</p>
+  <h1>Ooops, something went wrong.</h1>
 
   <div class="scene" aria-label="Arctic scene">
 
-    <!-- Icebergs (background) -->
+    <!-- Icebergs -->
     <div class="icebergs" aria-hidden="true">
       <svg viewBox="0 0 1200 420" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -279,7 +294,6 @@
             <stop offset="1" stop-color="#c7dcff" stop-opacity=".55"/>
           </linearGradient>
         </defs>
-
         <polygon points="0,260 210,120 420,260" fill="url(#ice1)"/>
         <polygon points="260,260 570,70 860,260" fill="url(#ice2)"/>
         <polygon points="720,260 900,140 1200,260" fill="url(#ice1)"/>
@@ -290,61 +304,15 @@
     <div class="horizon" aria-hidden="true"></div>
     <div class="water" aria-hidden="true"></div>
 
-    <!-- Penguins with head, beak, wings, feet -->
-    <svg class="penguin p1" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- body -->
-      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
-      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
-      <!-- head -->
-      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
-      <!-- eyes -->
-      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
-      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
-      <!-- beak -->
-      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
-      <!-- wings -->
-      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
-      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
-      <!-- feet -->
-      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-    </svg>
-
-    <svg class="penguin p2" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
-      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
-      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
-      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
-      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
-      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
-      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
-      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
-      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-    </svg>
-
-    <svg class="penguin p3" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
-      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
-      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
-      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
-      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
-      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
-      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
-      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
-      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
-    </svg>
-
-    <!-- Rod -->
+    <!-- Rod + line + hook -->
     <div class="rod" aria-hidden="true"></div>
     <div class="line" aria-hidden="true"></div>
     <div class="hook" aria-hidden="true"></div>
 
-    <!-- Bear + basket (between rod and sea level) -->
+    <!-- Bear + basket -->
     <div class="bearwrap" aria-hidden="true">
-      <!-- Bear SVG with body + legs -->
       <div class="bear">
+        <!-- Bear SVG (head + body + legs) -->
         <svg viewBox="0 0 220 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="fur" cx="35%" cy="30%" r="75%">
@@ -352,38 +320,48 @@
               <stop offset="60%" stop-color="#e9eefc"/>
               <stop offset="100%" stop-color="#cfd7e6"/>
             </radialGradient>
+            <radialGradient id="fur2" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#f8fbff"/>
+              <stop offset="100%" stop-color="#dfe7f5"/>
+            </radialGradient>
           </defs>
 
           <!-- body -->
-          <ellipse cx="120" cy="150" rx="70" ry="50" fill="url(#fur)" opacity=".98"/>
+          <ellipse cx="132" cy="155" rx="72" ry="52" fill="url(#fur2)" opacity=".98"/>
           <!-- legs -->
-          <ellipse cx="78" cy="185" rx="22" ry="18" fill="#d8e2f2"/>
-          <ellipse cx="140" cy="190" rx="24" ry="18" fill="#d8e2f2"/>
+          <ellipse cx="96" cy="194" rx="22" ry="16" fill="#d8e2f2"/>
+          <ellipse cx="154" cy="196" rx="24" ry="16" fill="#d8e2f2"/>
+          <!-- paws -->
+          <ellipse cx="96" cy="200" rx="10" ry="6" fill="rgba(0,0,0,.08)"/>
+          <ellipse cx="154" cy="202" rx="10" ry="6" fill="rgba(0,0,0,.08)"/>
+
           <!-- head -->
-          <circle cx="95" cy="95" r="55" fill="url(#fur)"/>
+          <circle cx="90" cy="98" r="56" fill="url(#fur)"/>
           <!-- ears -->
-          <circle cx="55" cy="60" r="16" fill="url(#fur)"/>
-          <circle cx="135" cy="60" r="16" fill="url(#fur)"/>
-          <circle cx="55" cy="60" r="9" fill="#dbe4f2" opacity=".9"/>
-          <circle cx="135" cy="60" r="9" fill="#dbe4f2" opacity=".9"/>
+          <circle cx="50" cy="62" r="16" fill="url(#fur)"/>
+          <circle cx="130" cy="62" r="16" fill="url(#fur)"/>
+          <circle cx="50" cy="62" r="9" fill="#dbe4f2" opacity=".9"/>
+          <circle cx="130" cy="62" r="9" fill="#dbe4f2" opacity=".9"/>
+
           <!-- snout -->
-          <ellipse cx="100" cy="118" rx="34" ry="26" fill="#dfe7f5"/>
+          <ellipse cx="96" cy="124" rx="36" ry="26" fill="#dfe7f5"/>
           <!-- nose -->
-          <path d="M92 110c0-8 16-8 16 0 0 8-16 8-16 0Z" fill="#1f2937"/>
+          <path d="M88 116c0-8 16-8 16 0 0 8-16 8-16 0Z" fill="#1f2937"/>
           <!-- mouth -->
-          <path d="M100 117v10" stroke="rgba(31,41,55,.7)" stroke-width="3" stroke-linecap="round"/>
-          <path d="M100 129c-8 8-18 6-24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
-          <path d="M100 129c8 8 18 6 24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M96 123v10" stroke="rgba(31,41,55,.7)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M96 135c-8 8-18 6-24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M96 135c8 8 18 6 24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+
           <!-- eyes -->
-          <circle cx="82" cy="92" r="6" fill="#111827"/>
-          <circle cx="118" cy="92" r="6" fill="#111827"/>
-          <circle cx="80" cy="90" r="2" fill="#fff" opacity=".9"/>
-          <circle cx="116" cy="90" r="2" fill="#fff" opacity=".9"/>
+          <circle cx="78" cy="95" r="6" fill="#111827"/>
+          <circle cx="114" cy="95" r="6" fill="#111827"/>
+          <circle cx="76" cy="93" r="2" fill="#fff" opacity=".9"/>
+          <circle cx="112" cy="93" r="2" fill="#fff" opacity=".9"/>
         </svg>
       </div>
 
-      <!-- Fish basket -->
       <div class="basket">
+        <!-- Basket with small fish -->
         <svg viewBox="0 0 120 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="bask" x1="0" y1="0" x2="1" y2="1">
@@ -395,7 +373,6 @@
           <rect x="16" y="38" width="88" height="42" rx="12" fill="url(#bask)" opacity=".95"/>
           <path d="M24 52h72" stroke="rgba(255,255,255,.22)" stroke-width="3"/>
           <path d="M24 64h72" stroke="rgba(255,255,255,.22)" stroke-width="3"/>
-          <!-- tiny fish icon -->
           <path d="M56 58c0 6-6 10-14 10S28 64 28 58s6-10 14-10 14 4 14 10Z" fill="#7c5cff" opacity=".85"/>
           <path d="M56 58c6-6 12-8 18-9-1 6-1 12 0 18-6-1-12-3-18-9Z" fill="#22c55e" opacity=".85"/>
           <circle cx="38" cy="56" r="2" fill="#fff" opacity=".9"/>
@@ -403,9 +380,58 @@
       </div>
     </div>
 
-    <!-- Fish (with eye+mouth) -->
+    <!-- Penguins GROUP (stay close, move together) -->
+    <div class="penguin-group" aria-hidden="true">
+      <!-- Penguin SVG template: head, beak, wings, feet -->
+      <svg class="penguin p1" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+        <!-- feet -->
+        <ellipse cx="22" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <ellipse cx="38" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <!-- body -->
+        <ellipse cx="30" cy="56" rx="20" ry="28" fill="#0b0f1a"/>
+        <ellipse cx="30" cy="60" rx="12" ry="20" fill="#ffffff"/>
+        <!-- wings -->
+        <ellipse cx="12" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 58)"/>
+        <ellipse cx="48" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 58)"/>
+        <!-- head -->
+        <circle cx="30" cy="24" r="14" fill="#0b0f1a"/>
+        <!-- eyes -->
+        <circle cx="25" cy="22" r="2" fill="#fff"/><circle cx="35" cy="22" r="2" fill="#fff"/>
+        <circle cx="25" cy="22" r="1" fill="#000"/><circle cx="35" cy="22" r="1" fill="#000"/>
+        <!-- beak -->
+        <path d="M30 26 L42 30 L30 34 Z" fill="#f59e0b"/>
+      </svg>
+
+      <svg class="penguin p2" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="22" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <ellipse cx="38" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <ellipse cx="30" cy="56" rx="20" ry="28" fill="#0b0f1a"/>
+        <ellipse cx="30" cy="60" rx="12" ry="20" fill="#ffffff"/>
+        <ellipse cx="12" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 58)"/>
+        <ellipse cx="48" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 58)"/>
+        <circle cx="30" cy="24" r="14" fill="#0b0f1a"/>
+        <circle cx="25" cy="22" r="2" fill="#fff"/><circle cx="35" cy="22" r="2" fill="#fff"/>
+        <circle cx="25" cy="22" r="1" fill="#000"/><circle cx="35" cy="22" r="1" fill="#000"/>
+        <path d="M30 26 L42 30 L30 34 Z" fill="#f59e0b"/>
+      </svg>
+
+      <svg class="penguin p3" viewBox="0 0 60 90" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="22" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <ellipse cx="38" cy="86" rx="10" ry="4" fill="#f59e0b"/>
+        <ellipse cx="30" cy="56" rx="20" ry="28" fill="#0b0f1a"/>
+        <ellipse cx="30" cy="60" rx="12" ry="20" fill="#ffffff"/>
+        <ellipse cx="12" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 58)"/>
+        <ellipse cx="48" cy="58" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 58)"/>
+        <circle cx="30" cy="24" r="14" fill="#0b0f1a"/>
+        <circle cx="25" cy="22" r="2" fill="#fff"/><circle cx="35" cy="22" r="2" fill="#fff"/>
+        <circle cx="25" cy="22" r="1" fill="#000"/><circle cx="35" cy="22" r="1" fill="#000"/>
+        <path d="M30 26 L42 30 L30 34 Z" fill="#f59e0b"/>
+      </svg>
+    </div>
+
+    <!-- Fish (eye + mouth) -->
     <div class="fish" aria-hidden="true">
-      <svg width="86" height="42" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
+      <svg width="90" height="44" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
         <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="#7c5cff"/>
         <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" fill="#22c55e"/>
         <circle cx="22" cy="18" r="3.2" fill="rgba(255,255,255,.95)"/>
@@ -414,6 +440,7 @@
         <path d="M30 25c4 3 9 3 13 0" stroke="rgba(255,255,255,.65)" stroke-width="3" stroke-linecap="round"/>
       </svg>
     </div>
+
   </div>
 
   <div class="actions">
