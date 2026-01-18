@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 • Sayfa Bulunamadı</title>
+  <meta name="description" content="Aradığınız sayfa bulunamadı. Ana sayfaya dönebilir veya projelere göz atabilirsiniz." />
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#0f1b3d;
+      --card:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.14);
+      --text:#e9eefc;
+      --muted:rgba(233,238,252,.75);
+      --accent:#7c5cff;
+      --accent2:#22c55e;
+      --shadow: 0 20px 80px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(34,197,94,.25), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+      padding:24px;
+    }
+    .wrap{
+      width:min(1000px, 100%);
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:20px;
+      align-items:stretch;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+    }
+    .left{
+      padding:34px 28px;
+    }
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:18px;
+      background:rgba(255,255,255,.06);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent),#00d4ff);
+      box-shadow:0 0 0 6px rgba(124,92,255,.18);
+    }
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+    }
+    p{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.55;
+      max-width:60ch;
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:18px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      transition:.18s transform, .18s background, .18s border;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.1)}
+    .btn.primary{
+      border-color: rgba(124,92,255,.55);
+      background: linear-gradient(135deg, rgba(124,92,255,.55), rgba(124,92,255,.18));
+    }
+    .btn.success{
+      border-color: rgba(34,197,94,.55);
+      background: linear-gradient(135deg, rgba(34,197,94,.50), rgba(34,197,94,.16));
+    }
+    .hint{
+      margin-top:16px;
+      font-size:13px;
+      color:rgba(233,238,252,.6);
+    }
+
+    /* Right panel */
+    .right{
+      display:grid;
+      place-items:center;
+      padding:26px;
+      position:relative;
+    }
+    .big404{
+      font-size: clamp(74px, 10vw, 120px);
+      font-weight:900;
+      letter-spacing:-.06em;
+      margin:0;
+      line-height:1;
+      background: linear-gradient(135deg, #ffffff, rgba(255,255,255,.55));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .panel{
+      width:100%;
+      margin-top:18px;
+      padding:16px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.12);
+      color:rgba(233,238,252,.78);
+      font-size:14px;
+      line-height:1.55;
+    }
+    code{
+      padding:2px 6px;
+      border-radius:8px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:rgba(233,238,252,.9);
+    }
+
+    /* Decorative glow */
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(500px 240px at 20% 10%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(500px 240px at 85% 30%, rgba(34,197,94,.22), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+      filter: blur(18px);
+    }
+    .card > *{ position:relative; }
+
+    /* Mobile */
+    @media (max-width: 860px){
+      .wrap{grid-template-columns:1fr}
+      .right{order:-1}
+      p{max-width:unset}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card left">
+      <div class="badge"><span class="dot"></span> Sayfa bulunamadı</div>
+      <h1>404 — Kaybolduk galiba.</h1>
+      <p>
+        Aradığın sayfa burada yok. Link hatalı olabilir, sayfa taşınmış olabilir veya GitHub Pages
+        doğru dosyayı bulamıyor olabilir.
+      </p>
+
+      <div class="actions">
+        <a class="btn primary" href="/" aria-label="Ana sayfaya dön">
+          🏠 Ana sayfaya dön
+        </a>
+        <a class="btn success" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+          ⭐ GitHub profilim
+        </a>
+        <a class="btn" href="javascript:history.back()">
+          ↩️ Geri dön
+        </a>
+      </div>
+
+      <div class="hint">
+        İpucu: Root URL için repo’da <code>index.html</code> olmalı. Dosya adlarında büyük/küçük harf farkına dikkat et.
+      </div>
+    </section>
+
+    <aside class="card right" aria-label="Durum paneli">
+      <div style="text-align:center">
+        <div class="big404">404</div>
+        <div style="margin-top:10px; color:rgba(233,238,252,.7); font-weight:600;">
+          File not found
+        </div>
+      </div>
+
+      <div class="panel">
+        <div><strong>Hızlı kontrol listesi:</strong></div>
+        <ul style="margin:10px 0 0; padding-left:18px;">
+          <li>Repo kökünde <code>index.html</code> var mı?</li>
+          <li>GitHub Pages: Settings → Pages → doğru branch/folder seçili mi?</li>
+          <li>Dosya adı/klasör adı URL ile birebir aynı mı? (case sensitive)</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>
