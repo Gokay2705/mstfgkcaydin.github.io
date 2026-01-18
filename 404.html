@@ -19,7 +19,6 @@
 }
 
 *{box-sizing:border-box}
-
 body{
   margin:0;
   min-height:100vh;
@@ -49,7 +48,6 @@ h1{
   font-size:clamp(30px,4.2vw,56px);
   letter-spacing:-.02em;
 }
-
 p{
   margin:0 0 24px;
   color:var(--muted);
@@ -93,7 +91,7 @@ p{
   50%{ transform: translateY(-8px); }
 }
 
-/* Fishing rod + line + hook */
+/* Fishing rod */
 .rod{
   position:absolute;
   left:140px;
@@ -106,6 +104,7 @@ p{
   transform-origin:left center;
 }
 
+/* --- Cast cycle: drop -> wait 5s -> pull --- */
 .line{
   position:absolute;
   left:250px;
@@ -113,44 +112,59 @@ p{
   width:2px;
   height:0;
   background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
-  animation: dropLine 2.6s ease-in-out infinite;
+  transform-origin: top;
+  animation: castLine 8s ease-in-out infinite;
 }
-@keyframes dropLine{
-  0%,100%{ height:22px; opacity:.65; }
-  50%{ height:190px; opacity:1; }
-}
-
 .hook{
   position:absolute;
   left:246px;
-  top: calc(180px + 185px);
+  top:180px;                /* base (same as line top) */
   width:12px;height:12px;
   border:2px solid rgba(255,255,255,.85);
   border-top-color:transparent;
   border-left-color:transparent;
   border-radius:50%;
-  transform:rotate(25deg);
-  animation: hookMove 2.6s ease-in-out infinite;
-}
-@keyframes hookMove{
-  0%,100%{ transform: translateY(-165px) rotate(25deg); opacity:.65; }
-  50%{ transform: translateY(0) rotate(25deg); opacity:1; }
+  transform: translateY(0) rotate(25deg);
+  transform-origin: center;
+  animation: castHook 8s ease-in-out infinite;
 }
 
-/* Fish (caught) */
+/* timings (8s total):
+   0-1s drop (12.5%)
+   1-6s wait (62.5%)  -> total 5s wait
+   6-7s pull (12.5%)
+   7-8s reset (12.5%)
+*/
+@keyframes castLine{
+  0%{ height:18px; opacity:.70; }
+  12.5%{ height:200px; opacity:1; }   /* dropped */
+  75%{ height:200px; opacity:1; }     /* waiting (5s) */
+  87.5%{ height:18px; opacity:.80; }  /* pulled up */
+  100%{ height:18px; opacity:.70; }   /* reset */
+}
+@keyframes castHook{
+  0%{ transform: translateY(0) rotate(25deg); opacity:.70; }
+  12.5%{ transform: translateY(200px) rotate(25deg); opacity:1; }  /* match line height */
+  75%{ transform: translateY(200px) rotate(25deg); opacity:1; }
+  87.5%{ transform: translateY(0) rotate(25deg); opacity:.85; }
+  100%{ transform: translateY(0) rotate(25deg); opacity:.70; }
+}
+
+/* Fish swims RIGHT -> LEFT continuously */
 .fish{
   position:absolute;
-  width:64px;
-  left:230px;
-  top:250px;
+  width:72px;
+  height:auto;
+  top:230px;                 /* in water area */
+  right:-90px;               /* start offscreen to the right */
   filter: drop-shadow(0 12px 18px rgba(0,0,0,.35));
-  animation:caught 2.6s ease-in-out infinite;
+  animation: swimR2L 6s linear infinite;
+  opacity:.98;
 }
-@keyframes caught{
-  0%,30%{ opacity:0; transform:translateY(0) rotate(0deg); }
-  50%{ opacity:1; transform:translateY(-30px) rotate(-7deg); }
-  75%{ transform:translateY(-70px) rotate(10deg); }
-  100%{ transform:translateY(0) rotate(0deg); opacity:1; }
+@keyframes swimR2L{
+  0%{ transform: translateX(0) translateY(0) scaleX(-1); } /* scaleX(-1) to face left */
+  50%{ transform: translateX(calc(-50vw - 200px)) translateY(-6px) scaleX(-1); }
+  100%{ transform: translateX(calc(-110vw - 520px)) translateY(0) scaleX(-1); }
 }
 
 /* Buttons aligned corners */
@@ -160,7 +174,6 @@ p{
   align-items:center;
   gap:14px;
 }
-
 .btn{
   display:inline-flex;
   align-items:center;
@@ -174,12 +187,10 @@ p{
   text-decoration:none;
   transition:.2s;
   user-select:none;
-  min-width: 160px;
+  min-width:160px;
   justify-content:center;
 }
-
 .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
-
 .btn.primary{
   background:linear-gradient(135deg, rgba(124,92,255,.75), rgba(124,92,255,.28));
   border-color:rgba(124,92,255,.65);
@@ -191,14 +202,17 @@ p{
   .bear{left:22px; top:78px; width:120px; height:120px}
   .rod{left:110px; top:150px; width:120px}
   .line{left:210px; top:158px}
-  .hook{left:206px; top: calc(158px + 185px)}
-  .fish{left:190px; top:210px}
-  .btn{min-width: 140px}
+  .hook{left:206px; top:158px}
+  .fish{top:190px; width:64px}
+  .btn{min-width:140px}
 }
-
 @media(max-width:520px){
   .actions{flex-direction:column; align-items:stretch}
   .btn{width:100%}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
 }
 </style>
 </head>
@@ -208,8 +222,8 @@ p{
   <h1>Oops — this page doesn’t exist.</h1>
   <p>The URL might be wrong, the page may have moved, or we can’t find the correct file.</p>
 
-  <div class="scene">
-    <!-- Polar bear SVG (always visible, no external image) -->
+  <div class="scene" aria-label="Polar bear fishing scene">
+    <!-- Polar bear SVG (no external image) -->
     <div class="bear" aria-hidden="true">
       <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -224,32 +238,25 @@ p{
           </radialGradient>
         </defs>
 
-        <!-- head -->
         <circle cx="100" cy="105" r="58" fill="url(#fur)"/>
-        <!-- ears -->
         <circle cx="62" cy="70" r="16" fill="url(#fur)"/>
         <circle cx="138" cy="70" r="16" fill="url(#fur)"/>
         <circle cx="62" cy="70" r="9" fill="#dbe4f2" opacity=".9"/>
         <circle cx="138" cy="70" r="9" fill="#dbe4f2" opacity=".9"/>
 
-        <!-- snout -->
         <ellipse cx="100" cy="128" rx="34" ry="26" fill="#dfe7f5"/>
         <ellipse cx="100" cy="135" rx="22" ry="14" fill="rgba(0,0,0,.06)"/>
 
-        <!-- nose -->
         <path d="M92 120c0-8 16-8 16 0 0 8-16 8-16 0Z" fill="#1f2937"/>
-        <!-- mouth -->
         <path d="M100 127v10" stroke="rgba(31,41,55,.7)" stroke-width="3" stroke-linecap="round"/>
         <path d="M100 139c-8 8-18 6-24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
         <path d="M100 139c8 8 18 6 24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
 
-        <!-- eyes -->
         <circle cx="82" cy="105" r="6" fill="#111827"/>
         <circle cx="118" cy="105" r="6" fill="#111827"/>
         <circle cx="80" cy="103" r="2" fill="#fff" opacity=".9"/>
         <circle cx="116" cy="103" r="2" fill="#fff" opacity=".9"/>
 
-        <!-- soft shading -->
         <ellipse cx="100" cy="150" rx="70" ry="34" fill="url(#shade)" opacity=".35"/>
       </svg>
     </div>
@@ -258,13 +265,19 @@ p{
     <div class="line" aria-hidden="true"></div>
     <div class="hook" aria-hidden="true"></div>
 
-    <!-- Fish -->
+    <!-- Fish: RIGHT -> LEFT, with eye + mouth -->
     <div class="fish" aria-hidden="true">
-      <svg width="64" height="32" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
+      <svg width="72" height="36" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
+        <!-- body -->
         <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="#7c5cff"/>
+        <!-- tail -->
         <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" fill="#22c55e"/>
-        <circle cx="22" cy="18" r="3" fill="rgba(255,255,255,.92)"/>
-        <circle cx="23" cy="18" r="1.5" fill="rgba(0,0,0,.65)"/>
+        <!-- eye -->
+        <circle cx="22" cy="18" r="3.2" fill="rgba(255,255,255,.95)"/>
+        <circle cx="23" cy="18" r="1.6" fill="rgba(0,0,0,.70)"/>
+        <circle cx="21.6" cy="17.2" r="0.7" fill="rgba(255,255,255,.9)"/>
+        <!-- mouth -->
+        <path d="M30 25c4 3 9 3 13 0" stroke="rgba(255,255,255,.65)" stroke-width="3" stroke-linecap="round"/>
       </svg>
     </div>
 
