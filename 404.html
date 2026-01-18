@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Opps</title>
+  <title>Animated Bear</title>
   <style>
     :root { color-scheme: dark; }
     html, body { height: 100%; margin: 0; }
@@ -101,6 +101,85 @@
     }
     button:hover { transform: translateY(-1px); background: rgba(0,0,0,.32); border-color: rgba(255,255,255,.22); }
     button:active { transform: translateY(0px) scale(.98); }
+
+    /* ===== Return button (fixed bottom-right) ===== */
+    .return-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9999;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.28);
+      color: rgba(255,255,255,.92);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: .2px;
+
+      box-shadow:
+        0 14px 40px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+
+      transform: translateZ(0);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      overflow: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .return-btn:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.26);
+      background: rgba(0,0,0,.34);
+    }
+
+    /* Shine overlay */
+    .return-btn::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(115deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.08) 35%,
+        rgba(160,230,255,.18) 50%,
+        rgba(255,255,255,.08) 65%,
+        rgba(255,255,255,0) 100%);
+      transform: translateX(-120%) skewX(-18deg);
+      transition: transform .6s ease;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    .return-btn:hover::before{
+      transform: translateX(120%) skewX(-18deg);
+    }
+
+    /* Click "flash" */
+    .return-btn:active{
+      transform: translateY(0px) scale(.99);
+    }
+    .return-btn.flash{
+      box-shadow:
+        0 18px 55px rgba(0,0,0,.55),
+        0 0 26px rgba(140,220,255,.35),
+        0 0 0 1px rgba(255,255,255,.08) inset;
+    }
+
+    .kbd {
+      font-size: 12px;
+      font-weight: 900;
+      padding: 4px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.92);
+    }
   </style>
 </head>
 <body>
@@ -114,6 +193,19 @@
       <button id="sparkle">Sparkle</button>
     </div>
   </div>
+
+  <!-- Return button (bottom-right) -->
+  <a
+    id="returnBtn"
+    class="return-btn"
+    href="https://gokay2705.github.io/mstfgkcaydin.github.io/"
+    target="_self"
+    rel="noopener"
+    aria-label="Return"
+    title="Return"
+  >
+    Return <span class="kbd">↩</span>
+  </a>
 
   <script>
     // ==== CANVAS SETUP ====
@@ -166,33 +258,35 @@
       sparkleBoost = 1;
     });
 
-    // ==== BEAR DRAWING (REDRAW) ====
+    // Return button shine/flash on click
+    const returnBtn = document.getElementById("returnBtn");
+    returnBtn.addEventListener("pointerdown", () => {
+      returnBtn.classList.add("flash");
+      window.setTimeout(() => returnBtn.classList.remove("flash"), 220);
+    });
+
+    // ==== BEAR DRAWING ====
     function drawBear(t, W, H){
-      // Scene anchors
       const cx = W*0.52;
       const cy = H*0.58;
 
-      // Subtle breathing + bobbing
       const breathe = 1 + 0.02*Math.sin(t*1.6);
       const bob = 6*Math.sin(t*1.2);
 
-      // Blink timing
-      const blinkRaw = (Math.sin(t*0.85 + 1.7) + 1) * 0.5; // 0..1
-      const blink = clamp((blinkRaw - 0.86) / 0.10, 0, 1); // only near peaks
-      const eyeOpen = 1 - easeInOut(blink); // 1 open -> 0 closed
+      const blinkRaw = (Math.sin(t*0.85 + 1.7) + 1) * 0.5;
+      const blink = clamp((blinkRaw - 0.86) / 0.10, 0, 1);
+      const eyeOpen = 1 - easeInOut(blink);
 
-      // Waving
       const waveBase = Math.sin(t*2.3) * 0.18;
       const wave = waveBase * (0.35 + 0.65*waveBoost);
 
-      // Colors
       const fur = "#7a5b46";
       const fur2 = "#6a4d3b";
       const muzzle = "#caa58b";
       const nose = "#2a1c16";
       const cheek = "rgba(255,160,160,.22)";
 
-      // Shadow under bear
+      // Shadow
       ctx.save();
       ctx.translate(cx, cy + 130 + bob*0.25);
       ctx.scale(1.2, 0.55);
@@ -215,14 +309,13 @@
       ctx.fillStyle = fur2;
       ctx.fill();
 
-      // Belly highlight
       ctx.beginPath();
       ctx.ellipse(0, 25, 110, 95, 0, 0, Math.PI*2);
       ctx.fillStyle = "rgba(255,255,255,.08)";
       ctx.fill();
       ctx.restore();
 
-      // Left arm (relaxed)
+      // Left arm
       ctx.save();
       ctx.translate(-145, 120);
       ctx.rotate(-0.25);
@@ -230,22 +323,18 @@
       ctx.ellipse(0, 0, 52, 92, 0, 0, Math.PI*2);
       ctx.fillStyle = fur2;
       ctx.fill();
-
-      // Paw
       ctx.translate(0, 72);
       ctx.beginPath();
       ctx.ellipse(0, 0, 46, 34, 0.1, 0, Math.PI*2);
       ctx.fillStyle = fur;
       ctx.fill();
-
-      // Pad
       ctx.fillStyle = "rgba(0,0,0,.12)";
       ctx.beginPath();
       ctx.ellipse(0, 2, 18, 12, 0.1, 0, Math.PI*2);
       ctx.fill();
       ctx.restore();
 
-      // Right arm (waving)
+      // Right arm (wave)
       ctx.save();
       ctx.translate(145, 105);
       ctx.rotate(0.55 + wave);
@@ -253,16 +342,12 @@
       ctx.ellipse(0, 0, 52, 92, 0, 0, Math.PI*2);
       ctx.fillStyle = fur2;
       ctx.fill();
-
-      // Paw (wave tip)
       ctx.translate(0, 72);
       ctx.rotate(0.25 + wave*0.5);
       ctx.beginPath();
       ctx.ellipse(0, 0, 46, 34, -0.1, 0, Math.PI*2);
       ctx.fillStyle = fur;
       ctx.fill();
-
-      // Pad
       ctx.fillStyle = "rgba(0,0,0,.12)";
       ctx.beginPath();
       ctx.ellipse(0, 2, 18, 12, -0.1, 0, Math.PI*2);
@@ -286,7 +371,6 @@
         ctx.ellipse(0, 0, 56, 52, 0, 0, Math.PI*2);
         ctx.fillStyle = fur2;
         ctx.fill();
-
         ctx.beginPath();
         ctx.ellipse(6, 6, 28, 24, 0, 0, Math.PI*2);
         ctx.fillStyle = "rgba(255,255,255,.10)";
@@ -331,13 +415,11 @@
         ctx.save();
         ctx.translate(x, y);
 
-        // Eye glow
         ctx.fillStyle = "rgba(255,255,255,.10)";
         ctx.beginPath();
         ctx.ellipse(0, 0, 20, 18, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // Pupil (scaled for blink)
         ctx.save();
         ctx.scale(1, lerp(0.08, 1, eyeOpen));
         ctx.fillStyle = "#111";
@@ -345,14 +427,12 @@
         ctx.ellipse(0, 0, 7, 9, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // Highlight
         ctx.fillStyle = "rgba(255,255,255,.9)";
         ctx.beginPath();
         ctx.ellipse(-2, -3, 2.2, 2.2, 0, 0, Math.PI*2);
         ctx.fill();
         ctx.restore();
 
-        // Lid line when blinking
         if(eyeOpen < 0.35){
           ctx.strokeStyle = "rgba(0,0,0,.55)";
           ctx.lineWidth = 3;
@@ -432,11 +512,9 @@
       const W = rect.width;
       const H = rect.height;
 
-      // Fade boosts
       waveBoost = Math.max(0, waveBoost - dt*0.9);
       sparkleBoost = Math.max(0, sparkleBoost - dt*0.8);
 
-      // Clear
       ctx.clearRect(0,0,W,H);
 
       // Floating particles
@@ -459,13 +537,9 @@
       }
       ctx.globalAlpha = 1;
 
-      // Add sparkles when boosted
       if(sparkleBoost > 0 && Math.random() < 0.35) addSparkles(2);
 
-      // Draw the bear
       drawBear(now/1000, W, H);
-
-      // Draw sparkles
       drawSparkles(dt);
 
       requestAnimationFrame(frame);
