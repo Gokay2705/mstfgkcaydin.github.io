@@ -1,12 +1,12 @@
 :root {
   --brand-primary: #0b5ed7;
-  --brand-soft: #eef4ff;
   --text-dark: #1c1f26;
   --text-muted: #5c6678;
+  --border-soft: #e4e8f0;
 }
 
 body {
-  background: #f5f7fb;
+  background: #ffffff;
   color: var(--text-dark);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.7;
@@ -18,12 +18,12 @@ img {
 }
 
 .site-header {
-  padding: 2.5rem 0 1.5rem;
+  padding: 2rem 0 1rem;
 }
 
 .site-header h1 {
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 .eyebrow {
@@ -40,59 +40,59 @@ img {
 }
 
 .section-card {
-  background: #fff;
-  border-radius: 1rem;
-  padding: 2rem;
+  background: transparent;
+  padding: 0 0 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.section-card:last-of-type {
+  border-bottom: none;
 }
 
 .profile-photo {
-  border: 4px solid var(--brand-soft);
+  border: 2px solid var(--border-soft);
 }
 
 .contact-card {
-  background: var(--brand-soft);
-  padding: 1.5rem;
-  border-radius: 0.75rem;
+  background: #f8f9fb;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-soft);
 }
 
 .contact-card a {
   color: var(--brand-primary);
 }
 
-.portfolio-grid .img-thumbnail {
-  border: none;
-  border-radius: 0.75rem;
+.portfolio-grid .img-thumbnail,
+.project-block .img-thumbnail {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-soft);
   padding: 0;
-  margin: 0.25rem;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  margin: 0.35rem;
 }
 
 .project-block {
   margin-bottom: 2rem;
 }
 
-.project-block .img-thumbnail {
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
-}
-
 .contact-form .form-control {
-  border-radius: 0.75rem;
-  border: 1px solid #d6dde9;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-soft);
 }
 
 .contact-form .btn {
-  padding: 0.6rem 2rem;
-  border-radius: 999px;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
 }
 
 .thankyou-card {
-  background: var(--brand-soft);
-  border-radius: 1rem;
-  padding: 2rem;
+  background: #f8f9fb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
   text-align: center;
+  border: 1px solid var(--border-soft);
 }
 
 .site-footer {
@@ -108,6 +108,6 @@ img {
   }
 
   .section-card {
-    padding: 1.5rem;
+    padding-bottom: 1rem;
   }
 }
