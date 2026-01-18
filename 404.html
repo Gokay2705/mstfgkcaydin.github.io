@@ -70,7 +70,7 @@
   .ice-strip{
     position:absolute;
     left:0; right:0;
-    top:286px;                  /* matches horizon */
+    top:290px;                  /* matches horizon */
     height:34px;
     background: linear-gradient(180deg,
       rgba(255,255,255,.42),
@@ -98,7 +98,7 @@
   /* ✅ Penguins stay on ice (above horizon) */
   .penguin-group{
     position:absolute;
-    top:210px;                  /* higher so they stand on ice */
+    top:180px;                  /* higher so they stand on ice */
     left:68%;
     width:240px;
     height:120px;
@@ -152,7 +152,8 @@
     0%,100%{ transform: translateY(0); }
     50%{ transform: translateY(-6px); }
   }
-  .basket{ width:92px; height:72px; opacity:.95; }
+  .basket{ width:92px; height:72px; opacity:.95; top:240px;  }
+
 
   /* Rod + cast cycle */
   .rod{
