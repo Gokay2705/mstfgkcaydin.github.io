@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>M. Goekcé AYDIN Web Page</title>
     <!-- Bootstrap -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap-4.3.1.css" rel="stylesheet">
   </head>
   <body>
     <div class="container">
       <hr>
       <div class="row">
         <div class="col-6">
-          <h1>M. Goekcé AïDIN</h1>
+          <h1>M. Goekché AïDIN</h1>
         </div>
         <div class="col-6">
-          <p class="text-right"><a href="f" >Resume EN</a></p>
-		  <p class="text-right"><a href="" >Resume FR</a></p>
+          <p class="text-right"><a href="resume/Mustafa Aydin-Engg.pdf" >Resume EN</a></p>
+		  <p class="text-right"><a href="resume/Mustafa Aydin-Frr.pdf" >Resume FR</a></p>
         </div>
       </div>
       <hr>
@@ -32,10 +32,10 @@
         </div>
         <div class="col-md-4 col-sm-12">
           <address>
-          <strong>M. Goekcé AYDIN</strong><br>
+          <strong>M. Goekché AYDIN</strong><br>
           <br>
-Delémont, CA 2800<br>
-<abbr title="Phone">P:</abbr> (+41) 77 976 2663
+CA <br>
+<abbr title="Phone">P:</abbr> (+00) 
           </address>
           <div class="row justify-content-md-around m-1">
 <address>
@@ -136,8 +136,6 @@ Delémont, CA 2800<br>
             <li>Docker</li>
             <li>Kubernetes</li>
 			<li>Jenkins</li>
-			<li>Terraform</li>
-			<li>Prometheus & Grafana</li>
 			<li>SQL</li>
 			<li>Linux</li>
 			<li>Phython</li>
@@ -171,13 +169,12 @@ Delémont, CA 2800<br>
 			  <li>AWS Cloud Practioner</li>
 			  <li>AWS Fundamentals Building Serverless Applications</li>
 			  <li>Introduction to Cloud Computing - IBM</li>
-			  <li>Computer Networking</li>
 			  <li>Python Programming</li>
 			  <li>AWS Fundamentals Going Cloud-Native</li>
 			  <li>AWS Fundamentals Migrating to the Cloud</li>
 			  <li>Data Science Methodology</li>
 			  <li>Databases and SQL for Data Science</li>
-			  <li>ICSI  CNSS Certified Network Security Specialist</li>
+			  
 		  
 		  </lu>
 		  </div>
@@ -259,34 +256,39 @@ Delémont, CA 2800<br>
       <hr>
       <h2>Contact</h2>
       <hr>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8  col-12 jumbotron">
-            <form class="gform pure-form pure-form-stacked" method="POST" data-email="mstfgkcaydin@gmail.com"
+      	<form class="gform pure-form pure-form-stacked" method="POST" data-email="mstfgkcaydin@gmail.com"
   action="https://script.google.com/macros/s/AKfycbySzoWnfWBUQ9TQ9lcdxz90im2pdKDQsW5ab9Et27N97D0iIUSDDx904Of14R98byTn/exec">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name">
-              </div>
-              <div class="form-group">
-                <label for="email">E-Mail</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" aria-describedby="emailHelp">
-                <span id="emailHelp" class="form-text text-muted" style="display: none;">Please enter a valid e-mail address.</span>
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label>
-                <textarea rows="10" cols="100" class="form-control" id="message" name="message" placeholder="Message" aria-describedby="messageHelp"></textarea>
-                <span id="messageHelp" class="form-text text-muted" style="display: none;">Please enter a message.</span>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-<!-- Thankyou_message --><br>
-    <div class="thankyou_message" style="display:none;background:none;border:8px solid gray;border-radius: 40px;width: 400px;padding-top: 15px;padding-bottom: 40px;padding-left: 20px;padding-right: 20px;"><br><br>
-      <h1>Thank You for Contacting with Us!</h1>
-      <h1>*******</h1>
+	<center>
+	<div class="form-elements"><br>
+      <div style="background:none;border:6px solid blue;border-radius: 30px;width: 600px;padding-top: 15px;padding-bottom: 40px;padding-left: 20px;padding-right: 20px;"><br>
+        <b class="content-head" style="font-size: 2.3em;"></b>
+        <br><br>
+         <b style="margin-left: -450px;font-size: 1.3em;">Name :</b><br><br>
+        <input type="text" name="name" required="" style="font-size: 1em;width: 500px;"/><br><br>
+
+        <b style="margin-left: -450px;font-size: 1.3em;">E-mail :</b><br><br>
+        <input type="email" name="email" required="" style="font-size: 1em;width: 500px;"/><br><br>
+
+         <b style="margin-left: -450px;font-size: 1.3em;">Subject :</b><br><br>
+         <input type="text"  name="subject" required="" style="font-size: 1em;width: 500px;"/><br><br>
+      
+        <b style="margin-left: -400px;font-size: 1.3em;">Your Message :</b><br><br>
+        <textarea  name="message" rows="5" cols="22" required="" style="font-size: 1.3em;width: 500px;"></textarea><br><br>
+    
+        <button style="float: right;width: 100px;height: 27px;font-size: 1.1em;margin-right: 48px;">
+        <b>Send</b></button><br>
+      </div>
     </div>
-  </form>
+	</center>
+	
+<!-- Thankyou_message --><br>
+	<center>
+    <div class="thankyou_message" style="display:none;background:none;border:8px solid blue;border-radius: 40px;width: 600px;padding-top: 15px;padding-bottom: 40px;padding-left: 20px;padding-right: 20px;"><br><br>
+    <h1>Thank You for Contacting with Us!<br><br>My Best Regards.</h1>
+    </div>
+	</center>
+	</form>
+	    
   <script data-cfasync="false" type="text/javascript">
     
    (function() {
@@ -411,6 +413,13 @@ Delémont, CA 2800<br>
             </div>
           </div>
         </div>
+	      
+	      <!-- Sayac  -->
+	      <div>
+		      <center><script language="Javascript" src="http://sa.sayaclar.com/c/s4.php?a=t4gbahd&s=1a5"></script></div>
+		      </center>
+	      <!-- Sayac End -->
+
       </footer>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -422,7 +431,6 @@ Delémont, CA 2800<br>
 	<script id="_wauq1s">var _wau = _wau || []; _wau.push(["dynamic", "f7h9j1zbb6", "q1s", "3d85c6ffffff", "small"]);</script><script async src="//waust.at/d.js"></script>
 	</div>
  </body>
- 
-
 </html>
+
 
