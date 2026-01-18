@@ -334,14 +334,12 @@
   </div>
 
   <main class="wrap">
-    <section class="card left">
-      <div class="badge"><span class="dot"></span> Page not found</div>
 
-      <h1>404 — Looks like we got lost.</h1>
-      <p>
-        The page you’re looking for isn’t here. The link might be wrong, the page may have moved,
-        or GitHub Pages can’t find the correct file.
-      </p>
+    <aside class="card right" aria-label="Status panel">
+      <div style="text-align:center">
+        <div class="big404">404</div>
+        <div class="sub">File not found</div>
+      </div>
 
       <div class="actions">
         <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/" aria-label="Go to home page">
@@ -351,37 +349,69 @@
           ↩️ Go Back
         </a>
       </div>
-
-      <div class="hint">
-        Tip: For the root URL, your repo should contain <code>index.html</code>. Also check filename letter case.
-      </div>
-    </section>
-
-    <aside class="card right" aria-label="Status panel">
-      <div style="text-align:center">
-        <div class="big404">404</div>
-        <div class="sub">File not found</div>
-      </div>
-
       <div class="scene" aria-label="Moon fishing animation">
         <div class="moon" title="Moon"></div>
         <div class="line"></div>
         <div class="hook"></div>
 
         <!-- Fish that gets "caught" once per cycle -->
-        <div class="fish caught" title="Fish">
-          <svg width="46" height="22" viewBox="0 0 92 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="currentColor" opacity="0.95"/>
-            <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" class="accent"/>
-            <circle cx="22" cy="18" r="3" fill="rgba(255,255,255,.9)"/>
-            <circle cx="23" cy="18" r="1.5" fill="rgba(0,0,0,.65)"/>
-            <path d="M35 28c6 4 14 4 20 0" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-      </div>
+        .right{
+          display:grid;
+          place-items:center;
+          padding:26px;
+          position:relative;
+          min-height: 340px;
+        }
 
-      <div class="hint" style="margin-top:14px; text-align:center">
-        If this is your site, confirm <code>index.html</code> exists and GitHub Pages settings point to the correct branch/folder.
+        .scene{
+          width:100%;
+          height:180px;
+          margin-top:14px;
+          position:relative;
+          border-radius:18px;
+          border:1px dashed rgba(255,255,255,.22);
+          background:rgba(0,0,0,.12);
+          overflow:hidden;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+
+        .moon{
+          position:absolute;
+          width:72px;height:72px;
+          border-radius:999px;
+          background: radial-gradient(circle at 30% 30%, #ffffff, rgba(255,255,255,.55));
+          top:50%;
+          left:50%;
+          transform:translate(-50%, -50%);
+          box-shadow: 0 12px 30px rgba(0,0,0,.35);
+          animation: moonFloat 3.6s ease-in-out infinite;
+        }
+
+        .line{
+          position:absolute;
+          left:50%;
+          top:50%;
+          width:2px;
+          height:0;
+          background: linear-gradient(to bottom, rgba(255,255,255,.65), rgba(255,255,255,0));
+          transform-origin: top;
+          animation: dropLine 2.2s ease-in-out infinite;
+        }
+
+        .hook{
+          position:absolute;
+          left:50%;
+          top:50%;
+          width:10px;height:10px;
+          border-radius:999px;
+          border:2px solid rgba(255,255,255,.75);
+          border-top-color: transparent;
+          border-left-color: transparent;
+          transform: translate(-50%, -50%) rotate(25deg);
+          animation: hookY 2.2s ease-in-out infinite;
+        }
       </div>
     </aside>
   </main>
