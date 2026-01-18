@@ -35,89 +35,95 @@ body{
 }
 
 .card{
-  width:min(980px,100%);
+  width:min(1180px,100%);
   background:var(--card);
   border:1px solid var(--stroke);
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   backdrop-filter:blur(12px);
-  padding:36px 34px 90px;
-  position:relative;
+  padding:40px 40px 34px;
 }
 
 h1{
   margin:0 0 10px;
-  font-size:clamp(28px,4vw,44px);
+  font-size:clamp(30px,4.2vw,56px);
+  letter-spacing:-.02em;
 }
 
 p{
-  margin:0 0 22px;
+  margin:0 0 24px;
   color:var(--muted);
   font-size:16px;
-  max-width:80ch;
+  line-height:1.55;
+  max-width:90ch;
 }
 
-/* === Scene === */
 .scene{
-  height:260px;
+  height:320px;
   border-radius:18px;
   border:1px dashed rgba(255,255,255,.18);
   background:rgba(0,0,0,.12);
   position:relative;
   overflow:hidden;
+  margin-bottom:22px;
 }
 
-/* === Polar Bear === */
+/* Water */
+.water{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:120px;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+
+/* Polar bear (SVG container) */
 .bear{
   position:absolute;
-  width:96px;
-  height:96px;
-  border-radius:50%;
-  background:
-    url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Polar_Bear_-_Alaska_%28cropped%29.jpg/240px-Polar_Bear_-_Alaska_%28cropped%29.jpg")
-    center/cover no-repeat;
-  left:40px;
-  top:60px;
-  box-shadow:0 14px 40px rgba(0,0,0,.45);
+  left:46px;
+  top:96px;
+  width:140px;
+  height:140px;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.45));
+  opacity:.95;
   animation: bearFloat 4s ease-in-out infinite;
 }
-
 @keyframes bearFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-8px); }
 }
 
-/* === Fishing rod === */
+/* Fishing rod + line + hook */
 .rod{
   position:absolute;
-  left:96px;
-  top:140px;
-  width:90px;
-  height:4px;
+  left:140px;
+  top:172px;
+  width:130px;
+  height:5px;
   border-radius:999px;
-  background:rgba(255,255,255,.35);
+  background:rgba(255,255,255,.30);
   transform:rotate(14deg);
+  transform-origin:left center;
 }
 
 .line{
   position:absolute;
-  left:170px;
-  top:146px;
+  left:250px;
+  top:180px;
   width:2px;
   height:0;
-  background:linear-gradient(to bottom, rgba(255,255,255,.7), transparent);
+  background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
   animation: dropLine 2.6s ease-in-out infinite;
 }
-
 @keyframes dropLine{
-  0%,100%{height:24px}
-  50%{height:160px}
+  0%,100%{ height:22px; opacity:.65; }
+  50%{ height:190px; opacity:1; }
 }
 
 .hook{
   position:absolute;
-  left:166px;
-  top:306px;
+  left:246px;
+  top: calc(180px + 185px);
   width:12px;height:12px;
   border:2px solid rgba(255,255,255,.85);
   border-top-color:transparent;
@@ -126,45 +132,33 @@ p{
   transform:rotate(25deg);
   animation: hookMove 2.6s ease-in-out infinite;
 }
-
 @keyframes hookMove{
-  0%,100%{transform:translateY(-140px) rotate(25deg)}
-  50%{transform:translateY(0) rotate(25deg)}
+  0%,100%{ transform: translateY(-165px) rotate(25deg); opacity:.65; }
+  50%{ transform: translateY(0) rotate(25deg); opacity:1; }
 }
 
-/* === Fish === */
+/* Fish (caught) */
 .fish{
   position:absolute;
-  width:54px;
-  top:210px;
-  left:150px;
+  width:64px;
+  left:230px;
+  top:250px;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.35));
   animation:caught 2.6s ease-in-out infinite;
 }
-
 @keyframes caught{
-  0%,30%{opacity:0; transform:translateY(0)}
-  50%{opacity:1; transform:translateY(-28px)}
-  75%{transform:translateY(-60px)}
-  100%{transform:translateY(0)}
+  0%,30%{ opacity:0; transform:translateY(0) rotate(0deg); }
+  50%{ opacity:1; transform:translateY(-30px) rotate(-7deg); }
+  75%{ transform:translateY(-70px) rotate(10deg); }
+  100%{ transform:translateY(0) rotate(0deg); opacity:1; }
 }
 
-/* === Water === */
-.water{
-  position:absolute;
-  bottom:0; left:0; right:0;
-  height:90px;
-  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
-  border-top:1px solid rgba(255,255,255,.12);
-}
-
-/* === Buttons === */
+/* Buttons aligned corners */
 .actions{
-  position:absolute;
-  bottom:26px;
-  left:26px;
-  right:26px;
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  gap:14px;
 }
 
 .btn{
@@ -179,56 +173,108 @@ p{
   font-weight:800;
   text-decoration:none;
   transition:.2s;
+  user-select:none;
+  min-width: 160px;
+  justify-content:center;
 }
 
-.btn:hover{
-  background:rgba(255,255,255,.12);
-  transform:translateY(-1px);
-}
+.btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
 
 .btn.primary{
   background:linear-gradient(135deg, rgba(124,92,255,.75), rgba(124,92,255,.28));
   border-color:rgba(124,92,255,.65);
 }
 
-@media(max-width:720px){
-  .card{padding:28px 22px 96px}
-  .scene{height:220px}
+@media(max-width:860px){
+  .card{padding:28px 22px}
+  .scene{height:260px}
+  .bear{left:22px; top:78px; width:120px; height:120px}
+  .rod{left:110px; top:150px; width:120px}
+  .line{left:210px; top:158px}
+  .hook{left:206px; top: calc(158px + 185px)}
+  .fish{left:190px; top:210px}
+  .btn{min-width: 140px}
+}
+
+@media(max-width:520px){
+  .actions{flex-direction:column; align-items:stretch}
+  .btn{width:100%}
 }
 </style>
 </head>
 
 <body>
-
 <section class="card">
   <h1>Oops — this page doesn’t exist.</h1>
   <p>The URL might be wrong, the page may have moved, or we can’t find the correct file.</p>
 
   <div class="scene">
-    <div class="bear"></div>
-    <div class="rod"></div>
-    <div class="line"></div>
-    <div class="hook"></div>
+    <!-- Polar bear SVG (always visible, no external image) -->
+    <div class="bear" aria-hidden="true">
+      <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="fur" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#e9eefc"/>
+            <stop offset="100%" stop-color="#cfd7e6"/>
+          </radialGradient>
+          <radialGradient id="shade" cx="50%" cy="60%" r="60%">
+            <stop offset="0%" stop-color="rgba(0,0,0,.10)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+        </defs>
 
-    <div class="fish">
-      <svg width="54" height="26" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
-        <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="#7c5cff"/>
-        <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" fill="#22c55e"/>
+        <!-- head -->
+        <circle cx="100" cy="105" r="58" fill="url(#fur)"/>
+        <!-- ears -->
+        <circle cx="62" cy="70" r="16" fill="url(#fur)"/>
+        <circle cx="138" cy="70" r="16" fill="url(#fur)"/>
+        <circle cx="62" cy="70" r="9" fill="#dbe4f2" opacity=".9"/>
+        <circle cx="138" cy="70" r="9" fill="#dbe4f2" opacity=".9"/>
+
+        <!-- snout -->
+        <ellipse cx="100" cy="128" rx="34" ry="26" fill="#dfe7f5"/>
+        <ellipse cx="100" cy="135" rx="22" ry="14" fill="rgba(0,0,0,.06)"/>
+
+        <!-- nose -->
+        <path d="M92 120c0-8 16-8 16 0 0 8-16 8-16 0Z" fill="#1f2937"/>
+        <!-- mouth -->
+        <path d="M100 127v10" stroke="rgba(31,41,55,.7)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M100 139c-8 8-18 6-24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M100 139c8 8 18 6 24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- eyes -->
+        <circle cx="82" cy="105" r="6" fill="#111827"/>
+        <circle cx="118" cy="105" r="6" fill="#111827"/>
+        <circle cx="80" cy="103" r="2" fill="#fff" opacity=".9"/>
+        <circle cx="116" cy="103" r="2" fill="#fff" opacity=".9"/>
+
+        <!-- soft shading -->
+        <ellipse cx="100" cy="150" rx="70" ry="34" fill="url(#shade)" opacity=".35"/>
       </svg>
     </div>
 
-    <div class="water"></div>
+    <div class="rod" aria-hidden="true"></div>
+    <div class="line" aria-hidden="true"></div>
+    <div class="hook" aria-hidden="true"></div>
+
+    <!-- Fish -->
+    <div class="fish" aria-hidden="true">
+      <svg width="64" height="32" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
+        <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="#7c5cff"/>
+        <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" fill="#22c55e"/>
+        <circle cx="22" cy="18" r="3" fill="rgba(255,255,255,.92)"/>
+        <circle cx="23" cy="18" r="1.5" fill="rgba(0,0,0,.65)"/>
+      </svg>
+    </div>
+
+    <div class="water" aria-hidden="true"></div>
   </div>
 
   <div class="actions">
-    <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/">
-      🏠 Go to Home
-    </a>
-    <a class="btn" href="javascript:history.back()">
-      ↩️ Go Back
-    </a>
+    <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/">🏠 Go to Home</a>
+    <a class="btn" href="javascript:history.back()">↩️ Go Back</a>
   </div>
 </section>
-
 </body>
 </html>
