@@ -2,24 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>404 • Page Not Found</title>
-  <meta name="description" content="404 page not found. Return home or go back." />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 • File not found</title>
+  <meta name="description" content="404 file not found. Go to home or go back." />
 
   <style>
     :root{
       --bg1:#0b1020;
       --bg2:#0f1b3d;
-      --card:rgba(255,255,255,.08);
-      --stroke:rgba(255,255,255,.14);
+
+      --card: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.14);
+
       --text:#e9eefc;
-      --muted:rgba(233,238,252,.78);
+      --muted: rgba(233,238,252,.72);
+
       --accent:#7c5cff;
       --accent2:#22c55e;
+
       --shadow: 0 20px 80px rgba(0,0,0,.45);
       --radius: 22px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
     body{
       margin:0;
       min-height:100vh;
@@ -35,92 +42,102 @@
       padding:24px;
     }
 
-    /* soft animated background particles */
+    /* Animated background blobs */
     .bg{
       position:fixed;
       inset:0;
       pointer-events:none;
       opacity:.55;
+      z-index:0;
     }
     .orb{
       position:absolute;
-      width:520px;height:520px;
+      width:560px;height:560px;
       border-radius:999px;
-      filter: blur(40px);
-      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.55), transparent 60%);
+      filter: blur(44px);
+      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.55), transparent 62%);
+      top:-220px; left:-220px;
       animation: drift 10s ease-in-out infinite alternate;
-      top:-180px; left:-180px;
     }
     .orb2{
       position:absolute;
-      width:560px;height:560px;
+      width:620px;height:620px;
       border-radius:999px;
-      filter: blur(46px);
-      background: radial-gradient(circle at 60% 40%, rgba(34,197,94,.40), transparent 62%);
+      filter: blur(52px);
+      background: radial-gradient(circle at 60% 40%, rgba(34,197,94,.40), transparent 65%);
+      bottom:-260px; right:-260px;
       animation: drift2 12s ease-in-out infinite alternate;
-      bottom:-220px; right:-220px;
     }
     @keyframes drift{
       from{ transform: translate(0,0) scale(1); }
-      to{ transform: translate(60px,40px) scale(1.05); }
+      to{ transform: translate(70px,45px) scale(1.06); }
     }
     @keyframes drift2{
       from{ transform: translate(0,0) scale(1); }
-      to{ transform: translate(-70px,-50px) scale(1.06); }
+      to{ transform: translate(-85px,-55px) scale(1.07); }
     }
 
+    /* Layout */
     .wrap{
-      width:min(1040px, 100%);
+      width:min(1020px, 100%);
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:20px;
+      grid-template-columns: 420px 1fr;
+      gap:22px;
       align-items:stretch;
-      z-index:2;
+      z-index:1;
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--stroke);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       overflow:hidden;
       position:relative;
-      transform: translateY(8px);
       opacity:0;
+      transform: translateY(8px);
       animation: popIn .55s ease forwards;
     }
     @keyframes popIn{
-      to{ transform: translateY(0); opacity:1; }
+      to{ opacity:1; transform:translateY(0); }
     }
-    .card:before{
+    .card::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background:
-        radial-gradient(500px 240px at 20% 10%, rgba(124,92,255,.35), transparent 60%),
-        radial-gradient(500px 240px at 85% 30%, rgba(34,197,94,.18), transparent 60%);
-      opacity:.6;
       pointer-events:none;
+      background:
+        radial-gradient(520px 260px at 18% 8%, rgba(124,92,255,.32), transparent 60%),
+        radial-gradient(520px 260px at 86% 28%, rgba(34,197,94,.18), transparent 62%);
       filter: blur(18px);
+      opacity:.7;
     }
     .card > *{ position:relative; }
 
-    .left{ padding:34px 28px; }
+    /* Left card content */
+    .panel{
+      padding:28px 26px 24px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
     .badge{
       display:inline-flex;
-      gap:10px;
       align-items:center;
+      gap:10px;
       padding:8px 12px;
-      border:1px solid var(--stroke);
       border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
       font-size:13px;
-      color:var(--muted);
-      margin-bottom:18px;
-      background:rgba(255,255,255,.06);
+      width:fit-content;
     }
     .dot{
       width:10px;height:10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--accent),#00d4ff);
+      background: linear-gradient(135deg, var(--accent), #00d4ff);
       box-shadow:0 0 0 6px rgba(124,92,255,.18);
       animation: pulse 1.6s ease-in-out infinite;
     }
@@ -129,24 +146,33 @@
       50%{ transform:scale(1.12); box-shadow:0 0 0 10px rgba(124,92,255,.10); }
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size: clamp(40px, 6vw, 64px);
-      line-height:1.05;
-      letter-spacing:-.03em;
+    .big404{
+      margin:6px 0 0;
+      font-weight: 900;
+      letter-spacing:-.06em;
+      font-size: clamp(86px, 10vw, 124px);
+      line-height: 1;
+      background: linear-gradient(135deg, #ffffff, rgba(255,255,255,.55));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 10px 40px rgba(0,0,0,.25);
+      text-align:center;
     }
-    p{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:16px;
-      line-height:1.55;
-      max-width:60ch;
+    .subtitle{
+      text-align:center;
+      margin-top:-6px;
+      color: rgba(233,238,252,.78);
+      font-weight: 800;
+      letter-spacing:-.01em;
     }
+
     .actions{
       display:flex;
-      flex-wrap:wrap;
+      justify-content:center;
       gap:12px;
-      margin-top:18px;
+      flex-wrap:wrap;
+      margin-top:4px;
     }
     .btn{
       display:inline-flex;
@@ -154,27 +180,217 @@
       gap:10px;
       padding:12px 14px;
       border-radius:14px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       text-decoration:none;
-      font-weight:700;
-      transition:.18s transform, .18s background, .18s border, .18s filter;
+      font-weight: 800;
+      transition: transform .18s ease, background .18s ease, filter .18s ease;
       user-select:none;
     }
-    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.1); filter:brightness(1.02)}
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.10);
+      filter: brightness(1.02);
+    }
     .btn.primary{
       border-color: rgba(124,92,255,.55);
       background: linear-gradient(135deg, rgba(124,92,255,.55), rgba(124,92,255,.18));
     }
-    .btn.secondary{
-      border-color: rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
+
+    /* Right card: animation + tips */
+    .right{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
-    .hint{
-      margin-top:16px;
-      font-size:13px;
-      color:rgba(233,238,252,.6);
+    .right h1{
+      margin:4px 0 0;
+      font-size: clamp(22px, 2.8vw, 34px);
+      letter-spacing:-.03em;
+    }
+    .right p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.55;
+      max-width: 65ch;
+    }
+
+    .scene{
+      width:100%;
+      height:260px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(0,0,0,.12);
+      position:relative;
+      overflow:hidden;
+      margin-top:6px;
+    }
+
+    /* Stars */
+    .star{
+      position:absolute;
+      width:2px;height:2px;
+      background: rgba(255,255,255,.8);
+      border-radius:999px;
+      opacity:.7;
+      animation: twinkle 2.2s ease-in-out infinite;
+    }
+    .star:nth-child(1){ top:24px; left:26px; animation-delay:.1s }
+    .star:nth-child(2){ top:56px; left:120px; animation-delay:.4s }
+    .star:nth-child(3){ top:34px; left:220px; animation-delay:.7s }
+    .star:nth-child(4){ top:84px; left:70%; animation-delay:1s }
+    .star:nth-child(5){ top:46px; left:86%; animation-delay:1.3s }
+    @keyframes twinkle{
+      0%,100%{ opacity:.35; transform:scale(1); }
+      50%{ opacity:1; transform:scale(1.35); }
+    }
+
+    /* Moon + fishing */
+    .moon{
+      position:absolute;
+      width:88px;height:88px;
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.55));
+      left:36px; top:54px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      animation: moonFloat 3.6s ease-in-out infinite;
+    }
+    .moon::after{
+      content:"";
+      position:absolute;
+      inset:14px;
+      border-radius:999px;
+      background: radial-gradient(circle at 35% 35%, rgba(0,0,0,.10), transparent 64%);
+      opacity:.9;
+    }
+    @keyframes moonFloat{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-7px); }
+    }
+
+    .rod{
+      position:absolute;
+      left:86px; top:124px;
+      width:72px; height:4px;
+      border-radius:999px;
+      background: rgba(255,255,255,.30);
+      transform: rotate(18deg);
+      transform-origin:left center;
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      opacity:.85;
+    }
+
+    .line{
+      position:absolute;
+      left:150px; top:132px;
+      width:2px; height:0;
+      background: linear-gradient(to bottom, rgba(255,255,255,.68), rgba(255,255,255,0));
+      transform-origin: top;
+      animation: dropLine 2.6s ease-in-out infinite;
+    }
+    @keyframes dropLine{
+      0%,100%{ height:22px; opacity:.65; }
+      50%{ height:165px; opacity:1; }
+    }
+
+    .hook{
+      position:absolute;
+      left:146px;
+      top: calc(132px + 160px);
+      width:12px;height:12px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.78);
+      border-top-color: transparent;
+      border-left-color: transparent;
+      transform: rotate(25deg);
+      animation: hookY 2.6s ease-in-out infinite;
+    }
+    @keyframes hookY{
+      0%,100%{ transform: translateY(-145px) rotate(25deg); opacity:.65; }
+      50%{ transform: translateY(0) rotate(25deg); opacity:1; }
+    }
+
+    /* Water wave */
+    .water{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:86px;
+      background:
+        radial-gradient(40px 18px at 30px 16px, rgba(124,92,255,.18), transparent 60%),
+        radial-gradient(46px 20px at 120px 26px, rgba(34,197,94,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border-top: 1px solid rgba(255,255,255,.10);
+      opacity:.85;
+    }
+    .water::before{
+      content:"";
+      position:absolute;
+      inset:-40px 0 0 0;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,.08) 0 22px,
+        rgba(255,255,255,0) 22px 54px
+      );
+      opacity:.28;
+      animation: waterMove 5s linear infinite;
+    }
+    @keyframes waterMove{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-120px); }
+    }
+
+    /* Fish */
+    .fish{
+      position:absolute;
+      width:54px;height:26px;
+      left:-80px;
+      top:186px;
+      opacity:.95;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.35));
+      color: rgba(124,92,255,.95);
+      animation: swim 2.6s linear infinite;
+    }
+    @keyframes swim{
+      0%{ transform: translateX(-40px) translateY(0) rotate(0deg); }
+      65%{ transform: translateX(calc(100% + 100px)) translateY(-10px) rotate(1deg); }
+      100%{ transform: translateX(calc(100% + 100px)) translateY(-10px) rotate(1deg); }
+    }
+
+    /* Caught fish */
+    .fish.caught{
+      left:132px;   /* near hook */
+      animation: caught 2.6s ease-in-out infinite;
+    }
+    @keyframes caught{
+      0%,35%{ transform: translateX(-180px) translateY(0) rotate(0deg); opacity:0; }
+      40%{ opacity:1; transform: translateX(0) translateY(0) rotate(0deg); }
+      55%{ transform: translateX(0) translateY(-26px) rotate(-8deg); }
+      70%{ transform: translateX(0) translateY(-62px) rotate(10deg); }
+      85%{ transform: translateX(0) translateY(-22px) rotate(-6deg); }
+      100%{ transform: translateX(0) translateY(0) rotate(0deg); opacity:1; }
+    }
+
+    .fish svg{ display:block; }
+    .fish .accent{ fill: rgba(34,197,94,.9); }
+
+    .tips{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.10);
+      border-radius: 18px;
+      padding: 14px 14px;
+    }
+    .tips strong{
+      display:block;
+      margin-bottom:8px;
+      letter-spacing:-.01em;
+    }
+    .tips ul{
+      margin:0;
+      padding-left:18px;
+      color: rgba(233,238,252,.70);
+      line-height:1.55;
     }
     code{
       padding:2px 6px;
@@ -184,204 +400,25 @@
       color:rgba(233,238,252,.9);
     }
 
-    /* Right panel + cute moon that "catches" a fish */
-    .right{
-      display:grid;
-      place-items:center;
-      padding:26px;
-      position:relative;
-      min-height: 340px;
-    }
-    .big404{
-      font-size: clamp(74px, 10vw, 120px);
-      font-weight:900;
-      letter-spacing:-.06em;
-      margin:0;
-      line-height:1;
-      background: linear-gradient(135deg, #ffffff, rgba(255,255,255,.55));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      text-shadow: 0 10px 40px rgba(0,0,0,.25);
-    }
-    .sub{
-      margin-top:10px;
-      color:rgba(233,238,252,.7);
-      font-weight:700;
-      text-align:center;
-    }
-
-    .scene{
-      width:100%;
-      height:180px;
-      margin-top:14px;
-      position:relative;
-      border-radius:18px;
-      border:1px dashed rgba(255,255,255,.22);
-      background:rgba(0,0,0,.12);
-      overflow:hidden;
-    }
-
-    /* Moon */
-    .moon{
-      position:absolute;
-      width:72px;height:72px;
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #ffffff, rgba(255,255,255,.55));
-      top:22px; left:18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      animation: moonFloat 3.6s ease-in-out infinite;
-    }
-    .moon:after{
-      content:"";
-      position:absolute;
-      inset:10px;
-      border-radius:999px;
-      background: radial-gradient(circle at 35% 35%, rgba(0,0,0,.08), transparent 62%);
-      opacity:.9;
-    }
-    @keyframes moonFloat{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-6px); }
-    }
-
-    /* Fishing rod line */
-    .line{
-      position:absolute;
-      left:62px; top:78px;
-      width:2px; height:0;
-      background: linear-gradient(to bottom, rgba(255,255,255,.65), rgba(255,255,255,0));
-      transform-origin: top;
-      animation: dropLine 2.2s ease-in-out infinite;
-    }
-    @keyframes dropLine{
-      0%,100%{ height:12px; opacity:.6; }
-      50%{ height:128px; opacity:1; }
-    }
-
-    /* Hook */
-    .hook{
-      position:absolute;
-      left:58px;
-      top: calc(78px + 122px);
-      width:10px;height:10px;
-      border-radius:999px;
-      border:2px solid rgba(255,255,255,.75);
-      border-top-color: transparent;
-      border-left-color: transparent;
-      transform: rotate(25deg);
-      animation: hookY 2.2s ease-in-out infinite;
-    }
-    @keyframes hookY{
-      0%,100%{ transform: translateY(-110px) rotate(25deg); opacity:.65; }
-      50%{ transform: translateY(0) rotate(25deg); opacity:1; }
-    }
-
-    /* Fish swimming across */
-    .fish{
-      position:absolute;
-      width:46px;height:22px;
-      left:-60px;
-      top:110px;
-      opacity:.95;
-      filter: drop-shadow(0 10px 16px rgba(0,0,0,.35));
-      animation: swim 2.2s linear infinite;
-    }
-    @keyframes swim{
-      0%{ transform: translateX(-10px) translateY(0) rotate(0deg); }
-      70%{ transform: translateX(calc(100% + 80px)) translateY(-8px) rotate(1deg); }
-      100%{ transform: translateX(calc(100% + 80px)) translateY(-8px) rotate(1deg); }
-    }
-
-    /* When "caught": fish jumps up near hook */
-    .fish.caught{
-      animation: caught 2.2s ease-in-out infinite;
-      left:46px;
-    }
-    @keyframes caught{
-      0%,35%{ transform: translateX(-120px) translateY(0) rotate(0deg); opacity:0; }
-      40%{ opacity:1; transform: translateX(0) translateY(0) rotate(0deg); }
-      55%{ transform: translateX(0) translateY(-22px) rotate(-6deg); }
-      70%{ transform: translateX(0) translateY(-48px) rotate(8deg); }
-      85%{ transform: translateX(0) translateY(-20px) rotate(-4deg); }
-      100%{ transform: translateX(0) translateY(0) rotate(0deg); opacity:1; }
-    }
-
-    /* Fish SVG coloring via currentColor */
-    .fish svg{display:block}
-    .fish{ color: rgba(124,92,255,.95); }
-    .fish .accent{ fill: rgba(34,197,94,.9); }
-
     /* Mobile */
     @media (max-width: 860px){
-      .wrap{grid-template-columns:1fr}
-      .right{order:-1}
-      p{max-width:unset}
+      .wrap{ grid-template-columns: 1fr; }
+      .panel{ padding:24px 20px; }
+      .right{ padding:18px; }
+      .scene{ height:220px; }
+      .moon{ left:26px; top:42px; width:80px; height:80px; }
+      .rod{ left:76px; top:114px; }
+      .line{ left:138px; top:124px; }
+      .hook{ left:134px; top: calc(124px + 160px); }
+      .fish.caught{ left:120px; }
     }
 
-    /* Respect reduced motion */
+    /* Reduce motion */
     @media (prefers-reduced-motion: reduce){
       *{ animation:none !important; transition:none !important; }
       .card{ opacity:1; transform:none; }
+      .water::before{ display:none; }
     }
-            <!-- Fish that gets "caught" once per cycle -->
-        .right{
-          display:grid;
-          place-items:center;
-          padding:26px;
-          position:relative;
-          min-height: 340px;
-        }
-
-        .scene{
-          width:100%;
-          height:180px;
-          margin-top:14px;
-          position:relative;
-          border-radius:18px;
-          border:1px dashed rgba(255,255,255,.22);
-          background:rgba(0,0,0,.12);
-          overflow:hidden;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-        }
-
-        .moon{
-          position:absolute;
-          width:72px;height:72px;
-          border-radius:999px;
-          background: radial-gradient(circle at 30% 30%, #ffffff, rgba(255,255,255,.55));
-          top:50%;
-          left:50%;
-          transform:translate(-50%, -50%);
-          box-shadow: 0 12px 30px rgba(0,0,0,.35);
-          animation: moonFloat 3.6s ease-in-out infinite;
-        }
-
-        .line{
-          position:absolute;
-          left:50%;
-          top:50%;
-          width:2px;
-          height:0;
-          background: linear-gradient(to bottom, rgba(255,255,255,.65), rgba(255,255,255,0));
-          transform-origin: top;
-          animation: dropLine 2.2s ease-in-out infinite;
-        }
-
-        .hook{
-          position:absolute;
-          left:50%;
-          top:50%;
-          width:10px;height:10px;
-          border-radius:999px;
-          border:2px solid rgba(255,255,255,.75);
-          border-top-color: transparent;
-          border-left-color: transparent;
-          transform: translate(-50%, -50%) rotate(25deg);
-          animation: hookY 2.2s ease-in-out infinite;
-        }
   </style>
 </head>
 
@@ -392,29 +429,58 @@
   </div>
 
   <main class="wrap">
+    <!-- LEFT: centered 404 + buttons (like your screenshot) -->
+    <section class="card">
+      <div class="panel">
+        <div class="badge"><span class="dot" aria-hidden="true"></span> Page not found</div>
 
-    <aside class="card right" aria-label="Status panel">
-      <div style="text-align:center">
         <div class="big404">404</div>
-        <div class="sub">File not found</div>
-      </div>
+        <div class="subtitle">File not found</div>
 
-      <div class="actions">
-        <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/" aria-label="Go to home page">
-          🏠 Go to Home
-        </a>
-        <a class="btn secondary" href="javascript:history.back()" aria-label="Go back">
-          ↩️ Go Back
-        </a>
+        <div class="actions">
+          <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/" aria-label="Go to home page">
+            🏠 Go to Home
+          </a>
+          <a class="btn" href="javascript:history.back()" aria-label="Go back">
+            ↩️ Go Back
+          </a>
+        </div>
       </div>
-      <div class="scene" aria-label="Moon fishing animation">
-        <div class="moon" title="Moon"></div>
-        <div class="line"></div>
-        <div class="hook"></div>
+    </section>
 
+    <!-- RIGHT: nicer message + moon fishing animation + tips -->
+    <section class="card">
+      <div class="right">
+        <h1>Oops — this page doesn’t exist.</h1>
+        <p>
+          The URL might be wrong, the page may have moved, we can’t find the correct file.
+        </p>
 
+        <div class="scene" aria-label="Moon fishing animation">
+          <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+
+          <div class="moon" title="Moon"></div>
+          <div class="rod" aria-hidden="true"></div>
+
+          <div class="line" aria-hidden="true"></div>
+          <div class="hook" aria-hidden="true"></div>
+
+          <div class="fish caught" title="Fish">
+            <svg width="54" height="26" viewBox="0 0 92 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="currentColor" opacity="0.95"/>
+              <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" class="accent"/>
+              <circle cx="22" cy="18" r="3" fill="rgba(255,255,255,.92)"/>
+              <circle cx="23" cy="18" r="1.5" fill="rgba(0,0,0,.65)"/>
+              <path d="M35 28c6 4 14 4 20 0" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- subtle water -->
+          <div class="water" aria-hidden="true"></div>
+        </div>
+        </div>
       </div>
-    </aside>
+    </section>
   </main>
 </body>
 </html>
