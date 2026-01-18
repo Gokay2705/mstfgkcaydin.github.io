@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ooops</title>
+  <title>Opps</title>
   <style>
     :root { color-scheme: dark; }
     html, body { height: 100%; margin: 0; }
@@ -32,6 +32,26 @@
     }
 
     canvas { width: 100%; height: 100%; display: block; }
+
+    /* H2 title above the bear's head */
+    .title {
+      position: absolute;
+      left: 50%;
+      top: 12%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: clamp(18px, 3vw, 34px);
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: rgba(255,255,255,.92);
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.12);
+      text-shadow: 0 8px 24px rgba(0,0,0,.45);
+      user-select: none;
+      white-space: nowrap;
+    }
 
     .hint {
       position: absolute;
@@ -75,7 +95,7 @@
       padding: 10px 12px;
       border-radius: 14px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
       transition: transform .15s ease, background .15s ease, border-color .15s ease;
       user-select: none;
     }
@@ -85,11 +105,13 @@
 </head>
 <body>
   <div class="wrap">
+    <h2 class="title">Ooops something went wrong !!!</h2>
     <canvas id="c"></canvas>
-    <div class="hint"><span class="dot"></span> Ayı nefes alıyor, göz kırpıyor ve el sallıyor</div>
+
+    <div class="hint"><span class="dot"></span> The bear is breathing, blinking, and waving</div>
     <div class="btns">
-      <button id="wave">El Salla</button>
-      <button id="sparkle">Parıltı</button>
+      <button id="wave">Wave</button>
+      <button id="sparkle">Sparkle</button>
     </div>
   </div>
 
@@ -115,7 +137,7 @@
 
     // ==== BACKGROUND PARTICLES ====
     const particles = [];
-    function spawnParticles(n=40){
+    function spawnParticles(n=48){
       const w = canvas.getBoundingClientRect().width;
       const h = canvas.getBoundingClientRect().height;
       for(let i=0;i<n;i++){
@@ -131,7 +153,7 @@
         });
       }
     }
-    spawnParticles(48);
+    spawnParticles();
 
     // ==== INTERACTION STATE ====
     let waveBoost = 0;      // 0..1
@@ -144,47 +166,33 @@
       sparkleBoost = 1;
     });
 
-    // ==== BEAR DRAWING (redraw) ====
-    function drawRoundedRect(x,y,w,h,r){
-      const rr = Math.min(r, w/2, h/2);
-      ctx.beginPath();
-      ctx.moveTo(x+rr, y);
-      ctx.arcTo(x+w, y, x+w, y+h, rr);
-      ctx.arcTo(x+w, y+h, x, y+h, rr);
-      ctx.arcTo(x, y+h, x, y, rr);
-      ctx.arcTo(x, y, x+w, y, rr);
-      ctx.closePath();
-    }
-
+    // ==== BEAR DRAWING (REDRAW) ====
     function drawBear(t, W, H){
-      // scene anchors
+      // Scene anchors
       const cx = W*0.52;
       const cy = H*0.58;
 
-      // subtle breathing
+      // Subtle breathing + bobbing
       const breathe = 1 + 0.02*Math.sin(t*1.6);
       const bob = 6*Math.sin(t*1.2);
 
-      // blink (random-ish using sin)
+      // Blink timing
       const blinkRaw = (Math.sin(t*0.85 + 1.7) + 1) * 0.5; // 0..1
       const blink = clamp((blinkRaw - 0.86) / 0.10, 0, 1); // only near peaks
       const eyeOpen = 1 - easeInOut(blink); // 1 open -> 0 closed
 
-      // wave
+      // Waving
       const waveBase = Math.sin(t*2.3) * 0.18;
       const wave = waveBase * (0.35 + 0.65*waveBoost);
 
-      // colors
+      // Colors
       const fur = "#7a5b46";
       const fur2 = "#6a4d3b";
       const muzzle = "#caa58b";
       const nose = "#2a1c16";
       const cheek = "rgba(255,160,160,.22)";
 
-      ctx.save();
-      ctx.translate(0, 0);
-
-      // shadow under bear
+      // Shadow under bear
       ctx.save();
       ctx.translate(cx, cy + 130 + bob*0.25);
       ctx.scale(1.2, 0.55);
@@ -194,12 +202,12 @@
       ctx.fill();
       ctx.restore();
 
-      // body group
+      // Body group
       ctx.save();
       ctx.translate(cx, cy + bob);
       ctx.scale(breathe, breathe);
 
-      // body
+      // Body
       ctx.save();
       ctx.translate(0, 90);
       ctx.beginPath();
@@ -207,15 +215,14 @@
       ctx.fillStyle = fur2;
       ctx.fill();
 
-      // belly
+      // Belly highlight
       ctx.beginPath();
       ctx.ellipse(0, 25, 110, 95, 0, 0, Math.PI*2);
       ctx.fillStyle = "rgba(255,255,255,.08)";
       ctx.fill();
       ctx.restore();
 
-      // arms (left + right)
-      // left arm (viewer left) - relaxed
+      // Left arm (relaxed)
       ctx.save();
       ctx.translate(-145, 120);
       ctx.rotate(-0.25);
@@ -224,19 +231,21 @@
       ctx.fillStyle = fur2;
       ctx.fill();
 
-      // paw
+      // Paw
       ctx.translate(0, 72);
       ctx.beginPath();
       ctx.ellipse(0, 0, 46, 34, 0.1, 0, Math.PI*2);
       ctx.fillStyle = fur;
       ctx.fill();
 
-      // pads
+      // Pad
       ctx.fillStyle = "rgba(0,0,0,.12)";
-      ctx.beginPath(); ctx.ellipse(0, 2, 18, 12, 0.1, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, 2, 18, 12, 0.1, 0, Math.PI*2);
+      ctx.fill();
       ctx.restore();
 
-      // right arm (viewer right) - waving
+      // Right arm (waving)
       ctx.save();
       ctx.translate(145, 105);
       ctx.rotate(0.55 + wave);
@@ -245,7 +254,7 @@
       ctx.fillStyle = fur2;
       ctx.fill();
 
-      // paw (wave tip)
+      // Paw (wave tip)
       ctx.translate(0, 72);
       ctx.rotate(0.25 + wave*0.5);
       ctx.beginPath();
@@ -253,12 +262,14 @@
       ctx.fillStyle = fur;
       ctx.fill();
 
-      // pads
+      // Pad
       ctx.fillStyle = "rgba(0,0,0,.12)";
-      ctx.beginPath(); ctx.ellipse(0, 2, 18, 12, -0.1, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, 2, 18, 12, -0.1, 0, Math.PI*2);
+      ctx.fill();
       ctx.restore();
 
-      // head
+      // Head
       ctx.save();
       ctx.translate(0, -20);
       ctx.beginPath();
@@ -266,7 +277,7 @@
       ctx.fillStyle = fur;
       ctx.fill();
 
-      // ears
+      // Ears
       function ear(x, y, rot){
         ctx.save();
         ctx.translate(x, y);
@@ -285,7 +296,7 @@
       ear(-105, -95, -0.25);
       ear(105, -95, 0.25);
 
-      // muzzle
+      // Muzzle
       ctx.save();
       ctx.translate(0, 35);
       ctx.beginPath();
@@ -293,13 +304,13 @@
       ctx.fillStyle = muzzle;
       ctx.fill();
 
-      // nose
+      // Nose
       ctx.beginPath();
       ctx.ellipse(0, -12, 26, 18, 0, 0, Math.PI*2);
       ctx.fillStyle = nose;
       ctx.fill();
 
-      // mouth (cute)
+      // Mouth
       ctx.strokeStyle = "rgba(42,28,22,.85)";
       ctx.lineWidth = 4;
       ctx.lineCap = "round";
@@ -310,23 +321,23 @@
       ctx.stroke();
       ctx.restore();
 
-      // cheeks
+      // Cheeks
       ctx.fillStyle = cheek;
       ctx.beginPath(); ctx.ellipse(-70, 35, 20, 14, -0.2, 0, Math.PI*2); ctx.fill();
       ctx.beginPath(); ctx.ellipse(70, 35, 20, 14, 0.2, 0, Math.PI*2); ctx.fill();
 
-      // eyes
+      // Eyes
       function eye(x, y){
         ctx.save();
         ctx.translate(x, y);
 
-        // eye white glow
+        // Eye glow
         ctx.fillStyle = "rgba(255,255,255,.10)";
         ctx.beginPath();
         ctx.ellipse(0, 0, 20, 18, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // pupil (scale by eyeOpen for blink)
+        // Pupil (scaled for blink)
         ctx.save();
         ctx.scale(1, lerp(0.08, 1, eyeOpen));
         ctx.fillStyle = "#111";
@@ -334,14 +345,14 @@
         ctx.ellipse(0, 0, 7, 9, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // tiny highlight
+        // Highlight
         ctx.fillStyle = "rgba(255,255,255,.9)";
         ctx.beginPath();
         ctx.ellipse(-2, -3, 2.2, 2.2, 0, 0, Math.PI*2);
         ctx.fill();
         ctx.restore();
 
-        // eyelid line when blinking
+        // Lid line when blinking
         if(eyeOpen < 0.35){
           ctx.strokeStyle = "rgba(0,0,0,.55)";
           ctx.lineWidth = 3;
@@ -355,7 +366,7 @@
       eye(-55, -18);
       eye(55, -18);
 
-      // forehead shine
+      // Forehead shine
       const g = ctx.createRadialGradient(30, -80, 10, 20, -70, 170);
       g.addColorStop(0, "rgba(255,255,255,.14)");
       g.addColorStop(1, "rgba(255,255,255,0)");
@@ -366,7 +377,6 @@
 
       ctx.restore(); // head
       ctx.restore(); // body group
-      ctx.restore(); // scene
     }
 
     // ==== SPARKLES ====
@@ -399,7 +409,6 @@
         ctx.translate(s.x, s.y);
         ctx.rotate(s.spin * p);
         ctx.beginPath();
-        // tiny 4-point star
         for(let k=0;k<8;k++){
           const ang = (Math.PI*2) * (k/8);
           const rr = (k%2===0) ? s.r*2.2 : s.r*0.9;
@@ -410,6 +419,7 @@
         ctx.fill();
         ctx.restore();
       }
+      ctx.globalAlpha = 1;
     }
 
     // ==== LOOP ====
@@ -422,23 +432,14 @@
       const W = rect.width;
       const H = rect.height;
 
-      // fade boosts
+      // Fade boosts
       waveBoost = Math.max(0, waveBoost - dt*0.9);
       sparkleBoost = Math.max(0, sparkleBoost - dt*0.8);
 
-      // background
+      // Clear
       ctx.clearRect(0,0,W,H);
 
-      // soft vignette
-      ctx.save();
-      const vg = ctx.createRadialGradient(W*0.5, H*0.45, Math.min(W,H)*0.1, W*0.5, H*0.55, Math.max(W,H)*0.8);
-      vg.addColorStop(0, "rgba(0,0,0,0)");
-      vg.addColorStop(1, "rgba(0,0,0,.35)");
-      ctx.fillStyle = vg;
-      ctx.fillRect(0,0,W,H);
-      ctx.restore();
-
-      // floating particles
+      // Floating particles
       for(const p of particles){
         p.phase += dt*p.tw;
         p.x += p.vx*(1 + 0.5*Math.sin(p.phase));
@@ -458,13 +459,13 @@
       }
       ctx.globalAlpha = 1;
 
-      // add sparkles when boosted
+      // Add sparkles when boosted
       if(sparkleBoost > 0 && Math.random() < 0.35) addSparkles(2);
 
-      // bear
+      // Draw the bear
       drawBear(now/1000, W, H);
 
-      // sparkles draw
+      // Draw sparkles
       drawSparkles(dt);
 
       requestAnimationFrame(frame);
