@@ -1,250 +1,425 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>404 • Page not found</title>
 
 <style>
-:root{
-  --bg1:#0b1020;
-  --bg2:#0f1b3d;
-  --card:rgba(255,255,255,.08);
-  --stroke:rgba(255,255,255,.14);
-  --text:#eef2ff;
-  --muted:rgba(238,242,255,.72);
-  --accent:#7c5cff;
-  --shadow:0 30px 90px rgba(0,0,0,.45);
-  --radius:26px;
-}
-*{box-sizing:border-box}
+  :root{
+    --bg1:#0b1020;
+    --bg2:#0f1b3d;
+    --card:rgba(255,255,255,.08);
+    --stroke:rgba(255,255,255,.14);
+    --text:#eef2ff;
+    --muted:rgba(238,242,255,.72);
+    --accent:#7c5cff;
+    --shadow:0 30px 90px rgba(0,0,0,.45);
+    --radius:26px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,.35), transparent 60%),
+      radial-gradient(900px 500px at 90% 30%, rgba(34,197,94,.22), transparent 60%),
+      linear-gradient(160deg,var(--bg1),var(--bg2));
+    padding:24px;
+  }
 
-body{
-  margin:0;
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,.35), transparent 60%),
-    radial-gradient(900px 500px at 90% 30%, rgba(34,197,94,.22), transparent 60%),
-    linear-gradient(160deg,var(--bg1),var(--bg2));
-  padding:24px;
-}
+  .card{
+    width:min(1400px,100%);
+    background:var(--card);
+    border:1px solid var(--stroke);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(12px);
+    padding:44px 44px 34px;
+  }
 
-.card{
-  width:min(1180px,100%);
-  background:var(--card);
-  border:1px solid var(--stroke);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(12px);
-  padding:40px 40px 34px;
-}
+  h1{
+    margin:0 0 10px;
+    font-size:clamp(34px,4.6vw,64px);
+    letter-spacing:-.02em;
+  }
+  p{
+    margin:0 0 26px;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.55;
+    max-width:100ch;
+  }
 
-h1{
-  margin:0 0 10px;
-  font-size:clamp(30px,4.2vw,56px);
-}
-p{
-  margin:0 0 24px;
-  color:var(--muted);
-  font-size:16px;
-  max-width:90ch;
-}
+  .scene{
+    height:420px;
+    border-radius:18px;
+    border:1px dashed rgba(255,255,255,.18);
+    background:rgba(0,0,0,.12);
+    position:relative;
+    overflow:hidden;
+  }
 
-.scene{
-  height:340px;
-  border-radius:18px;
-  border:1px dashed rgba(255,255,255,.18);
-  background:rgba(0,0,0,.12);
-  position:relative;
-  overflow:hidden;
-}
+  /* --- Water line + water --- */
+  .horizon{
+    position:absolute;
+    left:0; right:0;
+    top:260px;
+    height:2px;
+    background: rgba(255,255,255,.14);
+  }
+  .water{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    top:260px;
+    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  }
 
-/* === ICEBERGS (background) === */
-.icebergs{
-  position:absolute;
-  inset:0;
-  opacity:.35;
-}
-.icebergs svg{
-  width:100%;
-  height:100%;
-}
+  /* --- Icebergs --- */
+  .icebergs{
+    position:absolute;
+    inset:0;
+    opacity:.40;
+    pointer-events:none;
+  }
+  .icebergs svg{width:100%;height:100%}
 
-/* === Penguins === */
-.penguin{
-  position:absolute;
-  bottom:120px;
-  width:42px;
-  animation: walk 6s linear infinite;
-}
-.p1{ left:50%; animation-delay:0s }
-.p2{ left:58%; animation-delay:1.5s }
-.p3{ left:66%; animation-delay:3s }
+  /* --- Penguins: stand on ice (above horizon) --- */
+  .penguin{
+    position:absolute;
+    top:210px; /* sits just above horizon */
+    width:54px;
+    height:80px;
+    transform-origin: 50% 100%;
+    animation: waddle 2.2s ease-in-out infinite;
+  }
+  .penguin.p1{ left:58%; animation-delay:0s; }
+  .penguin.p2{ left:65%; animation-delay:.4s; }
+  .penguin.p3{ left:72%; animation-delay:.8s; }
 
-@keyframes walk{
-  0%{ transform:translateX(0) }
-  50%{ transform:translateX(20px) }
-  100%{ transform:translateX(0) }
-}
+  @keyframes waddle{
+    0%,100%{ transform: translateY(0) rotate(-2deg); }
+    50%{ transform: translateY(-3px) rotate(2deg); }
+  }
 
-/* === Polar Bear === */
-.bear{
-  position:absolute;
-  left:46px;
-  top:40px; /* moved UP */
-  width:140px;
-  animation: bearFloat 4s ease-in-out infinite;
-}
-@keyframes bearFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
-}
+  /* --- Bear + basket: between rod handle and sea level --- */
+  .bearwrap{
+    position:absolute;
+    left:130px;
+    top:170px;  /* between rod handle and horizon */
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    filter: drop-shadow(0 18px 28px rgba(0,0,0,.45));
+  }
 
-/* === Fishing === */
-.rod{
-  position:absolute;
-  left:140px;
-  top:120px;
-  width:130px;height:5px;
-  background:rgba(255,255,255,.3);
-  border-radius:999px;
-  transform:rotate(14deg);
-}
-.line{
-  position:absolute;
-  left:250px;
-  top:128px;
-  width:2px;height:0;
-  background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
-  animation: castLine 8s ease-in-out infinite;
-}
-.hook{
-  position:absolute;
-  left:246px;
-  top:128px;
-  width:12px;height:12px;
-  border:2px solid #fff;
-  border-top-color:transparent;
-  border-left-color:transparent;
-  border-radius:50%;
-  transform:rotate(25deg);
-  animation: castHook 8s ease-in-out infinite;
-}
+  .bear{
+    width:150px;
+    height:150px;
+    animation: bearFloat 4s ease-in-out infinite;
+  }
+  @keyframes bearFloat{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-6px); }
+  }
 
-@keyframes castLine{
-  0%{height:20px}
-  12.5%{height:200px}
-  75%{height:200px}
-  87.5%{height:20px}
-  100%{height:20px}
-}
-@keyframes castHook{
-  0%{transform:translateY(0) rotate(25deg)}
-  12.5%{transform:translateY(200px) rotate(25deg)}
-  75%{transform:translateY(200px) rotate(25deg)}
-  87.5%{transform:translateY(0) rotate(25deg)}
-  100%{transform:translateY(0) rotate(25deg)}
-}
+  .basket{
+    width:86px;
+    height:66px;
+    opacity:.95;
+  }
 
-/* === Fish (RIGHT → LEFT) === */
-.fish{
-  position:absolute;
-  right:-100px;
-  top:245px;
-  width:72px;
-  animation: swim 6s linear infinite;
-}
-@keyframes swim{
-  0%{transform:translateX(0) scaleX(-1)}
-  100%{transform:translateX(-130vw) scaleX(-1)}
-}
+  /* --- Rod + cast cycle: drop -> wait 5s -> pull --- */
+  .rod{
+    position:absolute;
+    left:150px;
+    top:170px;
+    width:160px;
+    height:6px;
+    border-radius:999px;
+    background:rgba(255,255,255,.30);
+    transform:rotate(14deg);
+    transform-origin:left center;
+  }
 
-/* === Water === */
-.water{
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:120px;
-  background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
-  border-top:1px solid rgba(255,255,255,.12);
-}
+  .line{
+    position:absolute;
+    left:288px;  /* rod tip-ish */
+    top:178px;
+    width:2px;
+    height:0;
+    background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
+    transform-origin: top;
+    animation: castLine 8s ease-in-out infinite;
+  }
+  .hook{
+    position:absolute;
+    left:284px;
+    top:178px;
+    width:12px;height:12px;
+    border:2px solid rgba(255,255,255,.85);
+    border-top-color:transparent;
+    border-left-color:transparent;
+    border-radius:50%;
+    transform: translateY(0) rotate(25deg);
+    transform-origin:center;
+    animation: castHook 8s ease-in-out infinite;
+  }
 
-/* Buttons */
-.actions{
-  display:flex;
-  justify-content:space-between;
-  margin-top:18px;
-}
-.btn{
-  padding:14px 18px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  text-decoration:none;
-  font-weight:800;
-}
-.btn.primary{
-  background:linear-gradient(135deg, rgba(124,92,255,.75), rgba(124,92,255,.28));
-}
+  /* 8s total: 0-1s drop, 1-6s wait, 6-7s pull, 7-8s reset */
+  @keyframes castLine{
+    0%{ height:18px; opacity:.70; }
+    12.5%{ height:220px; opacity:1; } /* reaches water */
+    75%{ height:220px; opacity:1; }   /* 5s wait */
+    87.5%{ height:18px; opacity:.80; }
+    100%{ height:18px; opacity:.70; }
+  }
+  @keyframes castHook{
+    0%{ transform: translateY(0) rotate(25deg); opacity:.70; }
+    12.5%{ transform: translateY(220px) rotate(25deg); opacity:1; }
+    75%{ transform: translateY(220px) rotate(25deg); opacity:1; }
+    87.5%{ transform: translateY(0) rotate(25deg); opacity:.85; }
+    100%{ transform: translateY(0) rotate(25deg); opacity:.70; }
+  }
 
+  /* --- Fish: oscillate (3s back, 5s forward) and flip direction --- */
+  .fish{
+    position:absolute;
+    top:305px; /* inside water */
+    left:60%;
+    width:86px;
+    filter: drop-shadow(0 12px 16px rgba(0,0,0,.35));
+    animation: fishSwim 8s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  /* Forward = to the LEFT for 5s, Back = to the RIGHT for 3s */
+  @keyframes fishSwim{
+    /* start moving LEFT (face left) */
+    0%   { transform: translateX(240px) scaleX(1); }
+    62.5%{ transform: translateX(-260px) scaleX(1); }  /* 5s forward */
+
+    /* go back RIGHT (flip to face right) */
+    62.5001%{ transform: translateX(-260px) scaleX(-1); }
+    100% { transform: translateX(240px) scaleX(-1); }  /* 3s back */
+  }
+
+  /* --- Buttons corners --- */
+  .actions{
+    display:flex;
+    justify-content:space-between;
+    margin-top:18px;
+    gap:14px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:14px 18px;
+    min-width:180px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06);
+    color:var(--text);
+    text-decoration:none;
+    font-weight:900;
+    transition:.2s;
+    user-select:none;
+  }
+  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
+  .btn.primary{
+    background:linear-gradient(135deg, rgba(124,92,255,.75), rgba(124,92,255,.28));
+    border-color:rgba(124,92,255,.65);
+  }
+
+  @media(max-width:980px){
+    .card{padding:28px 22px}
+    .scene{height:360px}
+    .horizon{top:230px}
+    .water{top:230px}
+    .penguin{top:185px}
+    .bearwrap{left:110px; top:140px}
+    .rod{left:130px; top:140px; width:150px}
+    .line{left:250px; top:148px}
+    .hook{left:246px; top:148px}
+    .fish{top:270px}
+  }
+  @media(max-width:560px){
+    .actions{flex-direction:column}
+    .btn{width:100%}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
 </style>
 </head>
 
 <body>
 <section class="card">
-<h1>Oops — this page doesn’t exist.</h1>
-<p>The URL might be wrong, the page may have moved, or we can’t find the correct file.</p>
+  <h1>Oops — this page doesn’t exist.</h1>
+  <p>The URL might be wrong, the page may have moved, or we can’t find the correct file.</p>
 
-<div class="scene">
+  <div class="scene" aria-label="Arctic scene">
 
-  <!-- Icebergs -->
-  <div class="icebergs">
-    <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
-      <polygon points="0,260 200,120 360,260" fill="#cfe9ff"/>
-      <polygon points="300,260 520,80 760,260" fill="#e5f4ff"/>
-      <polygon points="700,260 900,140 1200,260" fill="#d8efff"/>
+    <!-- Icebergs (background) -->
+    <div class="icebergs" aria-hidden="true">
+      <svg viewBox="0 0 1200 420" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ice1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#dff3ff" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#bcd6ff" stop-opacity=".55"/>
+          </linearGradient>
+          <linearGradient id="ice2" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#eaf7ff" stop-opacity=".85"/>
+            <stop offset="1" stop-color="#c7dcff" stop-opacity=".55"/>
+          </linearGradient>
+        </defs>
+
+        <polygon points="0,260 210,120 420,260" fill="url(#ice1)"/>
+        <polygon points="260,260 570,70 860,260" fill="url(#ice2)"/>
+        <polygon points="720,260 900,140 1200,260" fill="url(#ice1)"/>
+      </svg>
+    </div>
+
+    <!-- Horizon + water -->
+    <div class="horizon" aria-hidden="true"></div>
+    <div class="water" aria-hidden="true"></div>
+
+    <!-- Penguins with head, beak, wings, feet -->
+    <svg class="penguin p1" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- body -->
+      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
+      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
+      <!-- head -->
+      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
+      <!-- eyes -->
+      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
+      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
+      <!-- beak -->
+      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
+      <!-- wings -->
+      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
+      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
+      <!-- feet -->
+      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
+      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
     </svg>
+
+    <svg class="penguin p2" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
+      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
+      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
+      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
+      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
+      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
+      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
+      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
+      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
+      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
+    </svg>
+
+    <svg class="penguin p3" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="30" cy="46" rx="20" ry="26" fill="#0b0f1a"/>
+      <ellipse cx="30" cy="50" rx="12" ry="18" fill="#ffffff"/>
+      <circle cx="30" cy="22" r="14" fill="#0b0f1a"/>
+      <circle cx="25" cy="20" r="2" fill="#fff"/><circle cx="35" cy="20" r="2" fill="#fff"/>
+      <circle cx="25" cy="20" r="1" fill="#000"/><circle cx="35" cy="20" r="1" fill="#000"/>
+      <path d="M30 24 L42 28 L30 32 Z" fill="#f59e0b"/>
+      <ellipse cx="12" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(18 12 46)"/>
+      <ellipse cx="48" cy="46" rx="8" ry="16" fill="#0b0f1a" transform="rotate(-18 48 46)"/>
+      <ellipse cx="22" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
+      <ellipse cx="38" cy="74" rx="8" ry="3.5" fill="#f59e0b"/>
+    </svg>
+
+    <!-- Rod -->
+    <div class="rod" aria-hidden="true"></div>
+    <div class="line" aria-hidden="true"></div>
+    <div class="hook" aria-hidden="true"></div>
+
+    <!-- Bear + basket (between rod and sea level) -->
+    <div class="bearwrap" aria-hidden="true">
+      <!-- Bear SVG with body + legs -->
+      <div class="bear">
+        <svg viewBox="0 0 220 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="fur" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="60%" stop-color="#e9eefc"/>
+              <stop offset="100%" stop-color="#cfd7e6"/>
+            </radialGradient>
+          </defs>
+
+          <!-- body -->
+          <ellipse cx="120" cy="150" rx="70" ry="50" fill="url(#fur)" opacity=".98"/>
+          <!-- legs -->
+          <ellipse cx="78" cy="185" rx="22" ry="18" fill="#d8e2f2"/>
+          <ellipse cx="140" cy="190" rx="24" ry="18" fill="#d8e2f2"/>
+          <!-- head -->
+          <circle cx="95" cy="95" r="55" fill="url(#fur)"/>
+          <!-- ears -->
+          <circle cx="55" cy="60" r="16" fill="url(#fur)"/>
+          <circle cx="135" cy="60" r="16" fill="url(#fur)"/>
+          <circle cx="55" cy="60" r="9" fill="#dbe4f2" opacity=".9"/>
+          <circle cx="135" cy="60" r="9" fill="#dbe4f2" opacity=".9"/>
+          <!-- snout -->
+          <ellipse cx="100" cy="118" rx="34" ry="26" fill="#dfe7f5"/>
+          <!-- nose -->
+          <path d="M92 110c0-8 16-8 16 0 0 8-16 8-16 0Z" fill="#1f2937"/>
+          <!-- mouth -->
+          <path d="M100 117v10" stroke="rgba(31,41,55,.7)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M100 129c-8 8-18 6-24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M100 129c8 8 18 6 24 0" stroke="rgba(31,41,55,.45)" stroke-width="3" stroke-linecap="round"/>
+          <!-- eyes -->
+          <circle cx="82" cy="92" r="6" fill="#111827"/>
+          <circle cx="118" cy="92" r="6" fill="#111827"/>
+          <circle cx="80" cy="90" r="2" fill="#fff" opacity=".9"/>
+          <circle cx="116" cy="90" r="2" fill="#fff" opacity=".9"/>
+        </svg>
+      </div>
+
+      <!-- Fish basket -->
+      <div class="basket">
+        <svg viewBox="0 0 120 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bask" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#c7a36c"/>
+              <stop offset="1" stop-color="#8a6a3a"/>
+            </linearGradient>
+          </defs>
+          <path d="M20 40c0-18 18-32 40-32s40 14 40 32" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="6" stroke-linecap="round"/>
+          <rect x="16" y="38" width="88" height="42" rx="12" fill="url(#bask)" opacity=".95"/>
+          <path d="M24 52h72" stroke="rgba(255,255,255,.22)" stroke-width="3"/>
+          <path d="M24 64h72" stroke="rgba(255,255,255,.22)" stroke-width="3"/>
+          <!-- tiny fish icon -->
+          <path d="M56 58c0 6-6 10-14 10S28 64 28 58s6-10 14-10 14 4 14 10Z" fill="#7c5cff" opacity=".85"/>
+          <path d="M56 58c6-6 12-8 18-9-1 6-1 12 0 18-6-1-12-3-18-9Z" fill="#22c55e" opacity=".85"/>
+          <circle cx="38" cy="56" r="2" fill="#fff" opacity=".9"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Fish (with eye+mouth) -->
+    <div class="fish" aria-hidden="true">
+      <svg width="86" height="42" viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg">
+        <path d="M62 22c0 10-14 18-31 18S0 32 0 22 14 4 31 4s31 8 31 18Z" fill="#7c5cff"/>
+        <path d="M62 22c10-10 20-14 30-16-2 10-2 22 0 32-10-2-20-6-30-16Z" fill="#22c55e"/>
+        <circle cx="22" cy="18" r="3.2" fill="rgba(255,255,255,.95)"/>
+        <circle cx="23" cy="18" r="1.6" fill="rgba(0,0,0,.70)"/>
+        <circle cx="21.6" cy="17.2" r="0.7" fill="rgba(255,255,255,.9)"/>
+        <path d="M30 25c4 3 9 3 13 0" stroke="rgba(255,255,255,.65)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
   </div>
 
-  <!-- Penguins -->
-  <svg class="penguin p1" viewBox="0 0 60 80">
-    <ellipse cx="30" cy="40" rx="22" ry="30" fill="#111"/>
-    <ellipse cx="30" cy="44" rx="14" ry="20" fill="#fff"/>
-  </svg>
-  <svg class="penguin p2" viewBox="0 0 60 80">
-    <ellipse cx="30" cy="40" rx="22" ry="30" fill="#111"/>
-    <ellipse cx="30" cy="44" rx="14" ry="20" fill="#fff"/>
-  </svg>
-  <svg class="penguin p3" viewBox="0 0 60 80">
-    <ellipse cx="30" cy="40" rx="22" ry="30" fill="#111"/>
-    <ellipse cx="30" cy="44" rx="14" ry="20" fill="#fff"/>
-  </svg>
-
-  <!-- Bear -->
-  <div class="bear">
-    🐻‍❄️
+  <div class="actions">
+    <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/">🏠 Go to Home</a>
+    <a class="btn" href="javascript:history.back()">↩️ Go Back</a>
   </div>
-
-  <div class="rod"></div>
-  <div class="line"></div>
-  <div class="hook"></div>
-
-  <!-- Fish -->
-  <div class="fish">
-    🐟
-  </div>
-
-  <div class="water"></div>
-</div>
-
-<div class="actions">
-  <a class="btn primary" href="https://gokay2705.github.io/mstfgkcaydin.github.io/">🏠 Go to Home</a>
-  <a class="btn" href="javascript:history.back()">↩️ Go Back</a>
-</div>
 </section>
 </body>
 </html>
