@@ -66,39 +66,39 @@
   }
   .icebergs svg{width:100%;height:100%}
 
-  /* ✅ Snow/ice strip between mountains and water */
+  /* ✅ Snow/ice strip between mountains and water (WHITE, clearly visible) */
   .ice-strip{
     position:absolute;
     left:0; right:0;
-    top:290px;                  /* matches horizon */
-    height:34px;
+    top:270px;                  /* between mountains base and water */
+    height:52px;
     background: linear-gradient(180deg,
-      rgba(255,255,255,.42),
-      rgba(255,255,255,.22)
+      rgba(255,255,255,.78),
+      rgba(255,255,255,.40)
     );
-    border-top:1px solid rgba(255,255,255,.18);
-    border-bottom:1px solid rgba(255,255,255,.10);
+    border-top:1px solid rgba(255,255,255,.22);
+    border-bottom:1px solid rgba(0,0,0,.10);
   }
 
-  /* ✅ Water line + water (WATER LOWERED) */
+  /* ✅ Water line + water */
   .horizon{
     position:absolute;
     left:0; right:0;
-    top:320px;                  /* lower water => penguins not in water */
+    top:322px;                  /* keep water a bit lower */
     height:2px;
     background: rgba(255,255,255,.14);
   }
   .water{
     position:absolute;
     left:0; right:0; bottom:0;
-    top:320px;                  /* water starts lower */
+    top:322px;
     background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
   }
 
-  /* ✅ Penguins stay on ice (above horizon) */
+  /* ✅ Penguins stay above water */
   .penguin-group{
     position:absolute;
-    top:180px;                  /* higher so they stand on ice */
+    top:175px;
     left:68%;
     width:240px;
     height:120px;
@@ -133,41 +133,45 @@
     50%{ translate: 0 -6px; }
   }
 
-  /* ✅ Better looking bear (full body, paws, shading) */
+  /* ✅ Bear + basket are ABOVE the ground, not touching the bottom */
   .bearwrap{
     position:absolute;
     left:170px;
-    top:240px;                  /* on ice (between rod and water) */
+    top:205px;                  /* moved up so it doesn't touch bottom */
     display:flex;
     align-items:flex-end;
     gap:18px;
     filter: drop-shadow(0 18px 28px rgba(0,0,0,.45));
   }
+
+  /* ✅ Make bear BODY taller (less wide), by scaling SVG vertically */
   .bear{
     width:190px;
     height:190px;
+    transform: scaleX(.92) scaleY(1.08);  /* less wide, more tall */
+    transform-origin: 50% 70%;
     animation: bearFloat 4s ease-in-out infinite;
   }
   @keyframes bearFloat{
-    0%,100%{ transform: translateY(0); }
-    50%{ transform: translateY(-6px); }
+    0%,100%{ transform: scaleX(.92) scaleY(1.08) translateY(0); }
+    50%{ transform: scaleX(.92) scaleY(1.08) translateY(-6px); }
   }
+
+  /* ✅ Basket should NOT be absolute; keep it next to bear */
   .basket{
-  position:absolute; 
-  width:92px;
-  height:72px;
-  opacity:.95;
-  top:400px;
-}
+    width:92px;
+    height:72px;
+    opacity:.95;
+    position:relative;          /* top works relative, but we don't need it */
+    top:-2px;                   /* slight lift, optional */
+  }
 
-
-
-  /* Rod + cast cycle */
+  /* ✅ Rod aligned with line (same endpoint) */
   .rod{
     position:absolute;
-    left:205px;
-    top:195px;
-    width:200px;
+    left:210px;
+    top:188px;
+    width:210px;
     height:6px;
     border-radius:999px;
     background:rgba(255,255,255,.30);
@@ -175,10 +179,12 @@
     transform-origin:left center;
     opacity:.9;
   }
+
+  /* Rod tip alignment: set line start near rod tip */
   .line{
     position:absolute;
-    left:365px;
-    top:204px;
+    left:390px;                 /* moved to match rod tip visually */
+    top:206px;                  /* starts at rod tip */
     width:2px;
     height:0;
     background:linear-gradient(to bottom, rgba(255,255,255,.75), transparent);
@@ -187,8 +193,8 @@
   }
   .hook{
     position:absolute;
-    left:361px;
-    top:204px;
+    left:386px;
+    top:206px;
     width:12px;height:12px;
     border:2px solid rgba(255,255,255,.85);
     border-top-color:transparent;
@@ -198,6 +204,7 @@
     transform-origin:center;
     animation: castHook 8s ease-in-out infinite;
   }
+
   @keyframes castLine{
     0%{ height:18px; opacity:.70; }
     12.5%{ height:170px; opacity:1; } /* reaches water */
@@ -216,7 +223,7 @@
   /* Fish (water only) */
   .fish{
     position:absolute;
-    top:350px;                  /* in water zone now */
+    top:350px;
     left:70%;
     width:92px;
     filter: drop-shadow(0 12px 16px rgba(0,0,0,.35));
@@ -264,13 +271,13 @@
     .scene{height:360px}
     .horizon{top:275px}
     .water{top:275px}
-    .ice-strip{top:220px;height:28px}
-    .bearwrap{left:120px; top:165px}
-    .rod{left:145px; top:160px; width:180px}
-    .line{left:290px; top:168px}
-    .hook{left:286px; top:168px}
+    .ice-strip{top:220px;height:46px}
+    .bearwrap{left:120px; top:160px}
+    .rod{left:145px; top:158px; width:180px}
+    .line{left:300px; top:170px}
+    .hook{left:296px; top:170px}
     .fish{top:305px}
-    .penguin-group{top:170px; left:70%;}
+    .penguin-group{top:165px; left:70%;}
   }
   @media(max-width:560px){
     .actions{flex-direction:column}
@@ -284,7 +291,7 @@
 
 <body>
 <section class="card">
-  <h2 style="text-align: center;">Ooops, something went wrong.</h1>
+  <h2 style="text-align: center;">Ooops, something went wrong !!!</h2>
 
   <div class="scene" aria-label="Arctic scene">
 
@@ -307,10 +314,10 @@
       </svg>
     </div>
 
-    <!-- ✅ White ice strip between mountains and water -->
+    <!-- White snow between mountains and water -->
     <div class="ice-strip" aria-hidden="true"></div>
 
-    <!-- ✅ Lowered water -->
+    <!-- Water -->
     <div class="horizon" aria-hidden="true"></div>
     <div class="water" aria-hidden="true"></div>
 
@@ -322,6 +329,7 @@
     <!-- Bear + basket -->
     <div class="bearwrap" aria-hidden="true">
       <div class="bear">
+        <!-- SAME bear SVG (kept), only visually reshaped via CSS scale -->
         <svg viewBox="0 0 260 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="furA" cx="35%" cy="30%" r="75%">
@@ -335,15 +343,10 @@
             </radialGradient>
           </defs>
 
-          <!-- shadow -->
           <ellipse cx="150" cy="234" rx="92" ry="18" fill="rgba(0,0,0,.12)"/>
-
-          <!-- body -->
           <ellipse cx="160" cy="175" rx="92" ry="64" fill="url(#furB)"/>
-          <!-- belly -->
           <ellipse cx="172" cy="186" rx="55" ry="40" fill="#eef3ff" opacity=".95"/>
 
-          <!-- legs -->
           <g>
             <ellipse cx="120" cy="228" rx="30" ry="18" fill="#d8e2f2"/>
             <ellipse cx="195" cy="232" rx="32" ry="18" fill="#d8e2f2"/>
@@ -351,34 +354,26 @@
             <ellipse cx="195" cy="238" rx="12" ry="7" fill="rgba(0,0,0,.10)"/>
           </g>
 
-          <!-- head -->
           <circle cx="108" cy="112" r="66" fill="url(#furA)"/>
-          <!-- ears -->
           <circle cx="62" cy="62" r="18" fill="url(#furA)"/>
           <circle cx="142" cy="62" r="18" fill="url(#furA)"/>
           <circle cx="62" cy="62" r="10" fill="#dbe4f2" opacity=".9"/>
           <circle cx="142" cy="62" r="10" fill="#dbe4f2" opacity=".9"/>
 
-          <!-- cheeks -->
           <circle cx="76" cy="120" r="14" fill="#f6f9ff" opacity=".85"/>
           <circle cx="140" cy="120" r="14" fill="#f6f9ff" opacity=".85"/>
 
-          <!-- snout -->
           <ellipse cx="118" cy="150" rx="44" ry="32" fill="#e7eefc"/>
-          <!-- nose -->
           <path d="M108 140c0-10 20-10 20 0 0 10-20 10-20 0Z" fill="#1f2937"/>
-          <!-- mouth -->
           <path d="M118 148v12" stroke="rgba(31,41,55,.70)" stroke-width="4" stroke-linecap="round"/>
           <path d="M118 162c-10 10-22 8-30 0" stroke="rgba(31,41,55,.45)" stroke-width="4" stroke-linecap="round"/>
           <path d="M118 162c10 10 22 8 30 0" stroke="rgba(31,41,55,.45)" stroke-width="4" stroke-linecap="round"/>
 
-          <!-- eyes -->
           <circle cx="92" cy="110" r="7" fill="#111827"/>
           <circle cx="132" cy="110" r="7" fill="#111827"/>
           <circle cx="89" cy="107" r="2.3" fill="#fff" opacity=".95"/>
           <circle cx="129" cy="107" r="2.3" fill="#fff" opacity=".95"/>
 
-          <!-- tiny brow -->
           <path d="M82 96c8-8 18-8 26 0" stroke="rgba(31,41,55,.18)" stroke-width="4" stroke-linecap="round"/>
           <path d="M120 96c8-8 18-8 26 0" stroke="rgba(31,41,55,.18)" stroke-width="4" stroke-linecap="round"/>
         </svg>
