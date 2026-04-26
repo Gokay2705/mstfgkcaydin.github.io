@@ -3,548 +3,423 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Animated Bear</title>
+  <title>404 – Page Not Found · M. Goekce AYDIN</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+
   <style>
-    :root { color-scheme: dark; }
-    html, body { height: 100%; margin: 0; }
-    body {
-      display: grid;
-      place-items: center;
-      background: radial-gradient(1200px 800px at 50% 35%, #1b2a4a 0%, #0b1020 50%, #070a12 100%);
-      overflow: hidden;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    :root {
+      --primary:    #2563eb;
+      --primary-lt: #dbeafe;
+      --bg:         #f8fafc;
+      --surface:    #ffffff;
+      --border:     #e2e8f0;
+      --text:       #0f172a;
+      --text-muted: #64748b;
+    }
+    [data-theme="dark"] {
+      --bg:         #0f172a;
+      --surface:    #1e293b;
+      --border:     #334155;
+      --text:       #f1f5f9;
+      --text-muted: #94a3b8;
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      transition: background .3s, color .3s;
+    }
+
+    /* ── Navbar strip ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 8px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      transition: background .3s, border-color .3s;
+    }
+    .topbar-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -.02em;
+    }
+    .topbar-brand:hover { color: var(--primary); text-decoration: none; }
+    #themeToggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 5px 9px;
+      transition: background .15s;
+    }
+    #themeToggle:hover { background: var(--bg); }
+
+    /* ── Main content ── */
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .badge-404 {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 96px;
+      font-weight: 700;
+      letter-spacing: -.04em;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    [data-theme="dark"] .badge-404 { color: #60a5fa; }
+    .content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 340px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* ── Bear card ── */
     .wrap {
-      width: min(900px, 92vw);
+      width: min(680px, 92vw);
       aspect-ratio: 16 / 10;
-      border-radius: 24px;
+      border-radius: 20px;
       position: relative;
       overflow: hidden;
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.55),
-        0 0 0 1px rgba(255,255,255,.08) inset;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 0 0 1px var(--border);
+      background: var(--surface);
+      transition: background .3s, box-shadow .3s;
+    }
+    [data-theme="dark"] .wrap {
       background:
-        radial-gradient(900px 600px at 60% 20%, rgba(120,180,255,.20), transparent 60%),
-        radial-gradient(800px 500px at 20% 80%, rgba(255,140,120,.12), transparent 60%),
-        linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      backdrop-filter: blur(8px);
+        radial-gradient(900px 600px at 60% 20%, rgba(37,99,235,.18), transparent 60%),
+        radial-gradient(800px 500px at 20% 80%, rgba(96,165,250,.10), transparent 60%),
+        #1e293b;
+      box-shadow: 0 4px 32px rgba(0,0,0,.4), 0 0 0 1px #334155;
     }
-
     canvas { width: 100%; height: 100%; display: block; }
-
-    /* H2 title above the bear's head */
-    .title {
-      position: absolute;
-      left: 50%;
-      top: 12%;
-      transform: translate(-50%, -50%);
-      margin: 0;
-      padding: 10px 14px;
-      border-radius: 16px;
-      font-size: clamp(18px, 3vw, 34px);
-      font-weight: 800;
-      letter-spacing: .2px;
-      color: rgba(255,255,255,.92);
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.12);
-      text-shadow: 0 8px 24px rgba(0,0,0,.45);
-      user-select: none;
-      white-space: nowrap;
-    }
 
     .hint {
       position: absolute;
-      left: 16px;
-      bottom: 14px;
-      font-size: 13px;
-      color: rgba(255,255,255,.75);
-      letter-spacing: .2px;
-      user-select: none;
+      left: 14px; bottom: 12px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-muted);
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.10);
+      padding: 7px 11px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      transition: background .3s, border-color .3s;
     }
+    [data-theme="dark"] .hint { background: rgba(15,23,42,.6); }
     .dot {
-      width: 8px; height: 8px; border-radius: 999px;
-      background: rgba(140,220,255,.95);
-      box-shadow: 0 0 14px rgba(140,220,255,.8);
+      width: 7px; height: 7px; border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 10px rgba(37,99,235,.5);
       animation: pulse 1.4s ease-in-out infinite;
+      flex-shrink: 0;
     }
+    [data-theme="dark"] .dot { background: #60a5fa; box-shadow: 0 0 10px rgba(96,165,250,.5); }
     @keyframes pulse {
-      0%,100% { transform: scale(.9); opacity: .75; }
+      0%,100% { transform: scale(.9); opacity: .7; }
       50% { transform: scale(1.25); opacity: 1; }
     }
 
     .btns {
       position: absolute;
-      right: 16px;
-      bottom: 14px;
+      right: 14px; bottom: 12px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
-    button{
+    .btns button {
       appearance: none;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      color: rgba(255,255,255,.9);
-      padding: 10px 12px;
-      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 7px 14px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: 700;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      user-select: none;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background .15s, border-color .15s, transform .12s;
     }
-    button:hover { transform: translateY(-1px); background: rgba(0,0,0,.32); border-color: rgba(255,255,255,.22); }
-    button:active { transform: translateY(0px) scale(.98); }
+    .btns button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .btns button:active { transform: scale(.97); }
+    [data-theme="dark"] .btns button { background: rgba(15,23,42,.6); }
 
-    /* ===== Return button (fixed bottom-right) ===== */
+    /* ── Return button ── */
     .return-btn {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 9999;
-
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-
-      padding: 12px 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.28);
-      color: rgba(255,255,255,.92);
+      gap: 8px;
+      margin-top: 20px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
       text-decoration: none;
-      font-weight: 800;
-      letter-spacing: .2px;
-
-      box-shadow:
-        0 14px 40px rgba(0,0,0,.45),
-        0 0 0 1px rgba(255,255,255,.06) inset;
-
-      transform: translateZ(0);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      overflow: hidden;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      box-shadow: 0 4px 14px rgba(37,99,235,.35);
+      transition: background .15s, transform .15s, box-shadow .15s;
     }
-
-    .return-btn:hover{
+    .return-btn:hover {
+      background: #1d4ed8;
       transform: translateY(-2px);
-      border-color: rgba(255,255,255,.26);
-      background: rgba(0,0,0,.34);
+      box-shadow: 0 6px 20px rgba(37,99,235,.45);
+      text-decoration: none;
+      color: #fff;
     }
-
-    /* Shine overlay */
-    .return-btn::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: linear-gradient(115deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,.08) 35%,
-        rgba(160,230,255,.18) 50%,
-        rgba(255,255,255,.08) 65%,
-        rgba(255,255,255,0) 100%);
-      transform: translateX(-120%) skewX(-18deg);
-      transition: transform .6s ease;
-      pointer-events:none;
-      mix-blend-mode: screen;
-    }
-
-    .return-btn:hover::before{
-      transform: translateX(120%) skewX(-18deg);
-    }
-
-    /* Click "flash" */
-    .return-btn:active{
-      transform: translateY(0px) scale(.99);
-    }
-    .return-btn.flash{
-      box-shadow:
-        0 18px 55px rgba(0,0,0,.55),
-        0 0 26px rgba(140,220,255,.35),
-        0 0 0 1px rgba(255,255,255,.08) inset;
-    }
-
+    .return-btn:active { transform: scale(.98); }
     .kbd {
       font-size: 12px;
-      font-weight: 900;
-      padding: 4px 8px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.92);
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    /* ── Footer ── */
+    .foot {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--text-muted);
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h2 class="title">Ooops something went wrong !!!</h2>
-    <canvas id="c"></canvas>
 
-    <div class="hint"><span class="dot"></span> The bear is breathing, blinking, and waving</div>
+  <!-- Topbar -->
+  <nav class="topbar">
+    <a class="topbar-brand" href="https://mstfgkcaydin.github.io">M. Goekce AYDIN</a>
+    <button id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+
+  <!-- Content -->
+  <div class="content" style="margin-top: 56px;">
+    <div class="badge-404">404</div>
+    <h1>Page Not Found</h1>
+    <p>The page you're looking for doesn't exist or has been moved.</p>
+  </div>
+
+  <!-- Bear -->
+  <div class="wrap">
+    <canvas id="c"></canvas>
+    <div class="hint"><span class="dot"></span> The bear is breathing, blinking &amp; waving</div>
     <div class="btns">
-      <button id="wave">Wave</button>
-      <button id="sparkle">Sparkle</button>
+      <button id="wave">Wave 👋</button>
+      <button id="sparkle">Sparkle ✨</button>
     </div>
   </div>
 
-  <!-- Return button (bottom-right) -->
-  <a
-    id="returnBtn"
-    class="return-btn"
-    href="https://gokay2705.github.io/mstfgkcaydin.github.io/"
-    target="_self"
-    rel="noopener"
-    aria-label="Return"
-    title="Return"
-  >
-    Return <span class="kbd">↩</span>
+  <a class="return-btn" href="https://mstfgkcaydin.github.io">
+    ← Return Home <span class="kbd">↩</span>
   </a>
 
+  <p class="foot">mstfgkcaydin.github.io</p>
+
   <script>
-    // ==== CANVAS SETUP ====
+    // ── Dark mode ──
+    (function(){
+      var btn = document.getElementById('themeToggle');
+      var stored = localStorage.getItem('theme');
+      var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      function apply(d){ document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light'); btn.textContent = d ? '☀️' : '🌙'; }
+      apply(dark);
+      btn.addEventListener('click', function(){ dark = !dark; localStorage.setItem('theme', dark ? 'dark' : 'light'); apply(dark); });
+    })();
+
+    // ── Canvas ──
     const canvas = document.getElementById("c");
     const ctx = canvas.getContext("2d");
-
-    function resize() {
-      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    function resize(){
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio||1));
+      const r = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(r.width*dpr); canvas.height = Math.floor(r.height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
     }
-    window.addEventListener("resize", resize);
-    resize();
+    window.addEventListener("resize", resize); resize();
 
-    // ==== UTILS ====
-    const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-    const lerp = (a,b,t)=>a+(b-a)*t;
-    const easeInOut = t => t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const easeInOut=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 
-    // ==== BACKGROUND PARTICLES ====
-    const particles = [];
-    function spawnParticles(n=48){
-      const w = canvas.getBoundingClientRect().width;
-      const h = canvas.getBoundingClientRect().height;
-      for(let i=0;i<n;i++){
-        particles.push({
-          x: Math.random()*w,
-          y: Math.random()*h,
-          r: lerp(1.5, 4.5, Math.random()),
-          vx: lerp(-0.12, 0.12, Math.random()),
-          vy: lerp(-0.22, 0.04, Math.random()),
-          a: lerp(0.10, 0.35, Math.random()),
-          tw: lerp(0.8, 1.8, Math.random()),
-          phase: Math.random()*Math.PI*2
-        });
-      }
+    const particles=[];
+    function spawnParticles(n=40){
+      const w=canvas.getBoundingClientRect().width, h=canvas.getBoundingClientRect().height;
+      for(let i=0;i<n;i++) particles.push({x:Math.random()*w,y:Math.random()*h,r:lerp(1.5,4,Math.random()),vx:lerp(-.12,.12,Math.random()),vy:lerp(-.2,.04,Math.random()),a:lerp(.08,.28,Math.random()),tw:lerp(.8,1.8,Math.random()),phase:Math.random()*Math.PI*2});
     }
     spawnParticles();
 
-    // ==== INTERACTION STATE ====
-    let waveBoost = 0;      // 0..1
-    let sparkleBoost = 0;   // 0..1
+    let waveBoost=0, sparkleBoost=0;
+    document.getElementById("wave").addEventListener("click",()=>{ waveBoost=1; });
+    document.getElementById("sparkle").addEventListener("click",()=>{ sparkleBoost=1; });
 
-    document.getElementById("wave").addEventListener("click", () => {
-      waveBoost = 1;
-    });
-    document.getElementById("sparkle").addEventListener("click", () => {
-      sparkleBoost = 1;
-    });
+    function drawBear(t,W,H){
+      const cx=W*.52, cy=H*.58;
+      const breathe=1+.02*Math.sin(t*1.6);
+      const bob=6*Math.sin(t*1.2);
+      const blinkRaw=(Math.sin(t*.85+1.7)+1)*.5;
+      const blink=clamp((blinkRaw-.86)/.10,0,1);
+      const eyeOpen=1-easeInOut(blink);
+      const waveBase=Math.sin(t*2.3)*.18;
+      const wave=waveBase*(.35+.65*waveBoost);
+      const fur="#7a5b46", fur2="#6a4d3b", muzzle="#caa58b", nose="#2a1c16", cheek="rgba(255,160,160,.22)";
 
-    // Return button shine/flash on click
-    const returnBtn = document.getElementById("returnBtn");
-    returnBtn.addEventListener("pointerdown", () => {
-      returnBtn.classList.add("flash");
-      window.setTimeout(() => returnBtn.classList.remove("flash"), 220);
-    });
+      ctx.save(); ctx.translate(cx,cy+130+bob*.25); ctx.scale(1.2,.55);
+      ctx.beginPath(); ctx.ellipse(0,0,170,70,0,0,Math.PI*2);
+      ctx.fillStyle="rgba(0,0,0,.18)"; ctx.fill(); ctx.restore();
 
-    // ==== BEAR DRAWING ====
-    function drawBear(t, W, H){
-      const cx = W*0.52;
-      const cy = H*0.58;
+      ctx.save(); ctx.translate(cx,cy+bob); ctx.scale(breathe,breathe);
 
-      const breathe = 1 + 0.02*Math.sin(t*1.6);
-      const bob = 6*Math.sin(t*1.2);
-
-      const blinkRaw = (Math.sin(t*0.85 + 1.7) + 1) * 0.5;
-      const blink = clamp((blinkRaw - 0.86) / 0.10, 0, 1);
-      const eyeOpen = 1 - easeInOut(blink);
-
-      const waveBase = Math.sin(t*2.3) * 0.18;
-      const wave = waveBase * (0.35 + 0.65*waveBoost);
-
-      const fur = "#7a5b46";
-      const fur2 = "#6a4d3b";
-      const muzzle = "#caa58b";
-      const nose = "#2a1c16";
-      const cheek = "rgba(255,160,160,.22)";
-
-      // Shadow
-      ctx.save();
-      ctx.translate(cx, cy + 130 + bob*0.25);
-      ctx.scale(1.2, 0.55);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 170, 70, 0, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(0,0,0,.28)";
-      ctx.fill();
+      ctx.save(); ctx.translate(0,90);
+      ctx.beginPath(); ctx.ellipse(0,0,160,145,0,0,Math.PI*2); ctx.fillStyle=fur2; ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0,25,110,95,0,0,Math.PI*2); ctx.fillStyle="rgba(255,255,255,.06)"; ctx.fill();
       ctx.restore();
 
-      // Body group
-      ctx.save();
-      ctx.translate(cx, cy + bob);
-      ctx.scale(breathe, breathe);
-
-      // Body
-      ctx.save();
-      ctx.translate(0, 90);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 160, 145, 0, 0, Math.PI*2);
-      ctx.fillStyle = fur2;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.ellipse(0, 25, 110, 95, 0, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(255,255,255,.08)";
-      ctx.fill();
+      ctx.save(); ctx.translate(-145,120); ctx.rotate(-.25);
+      ctx.beginPath(); ctx.ellipse(0,0,52,92,0,0,Math.PI*2); ctx.fillStyle=fur2; ctx.fill();
+      ctx.translate(0,72); ctx.beginPath(); ctx.ellipse(0,0,46,34,.1,0,Math.PI*2); ctx.fillStyle=fur; ctx.fill();
       ctx.restore();
 
-      // Left arm
-      ctx.save();
-      ctx.translate(-145, 120);
-      ctx.rotate(-0.25);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 52, 92, 0, 0, Math.PI*2);
-      ctx.fillStyle = fur2;
-      ctx.fill();
-      ctx.translate(0, 72);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 46, 34, 0.1, 0, Math.PI*2);
-      ctx.fillStyle = fur;
-      ctx.fill();
-      ctx.fillStyle = "rgba(0,0,0,.12)";
-      ctx.beginPath();
-      ctx.ellipse(0, 2, 18, 12, 0.1, 0, Math.PI*2);
-      ctx.fill();
+      ctx.save(); ctx.translate(145,105); ctx.rotate(.55+wave);
+      ctx.beginPath(); ctx.ellipse(0,0,52,92,0,0,Math.PI*2); ctx.fillStyle=fur2; ctx.fill();
+      ctx.translate(0,72); ctx.rotate(.25+wave*.5);
+      ctx.beginPath(); ctx.ellipse(0,0,46,34,-.1,0,Math.PI*2); ctx.fillStyle=fur; ctx.fill();
       ctx.restore();
 
-      // Right arm (wave)
-      ctx.save();
-      ctx.translate(145, 105);
-      ctx.rotate(0.55 + wave);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 52, 92, 0, 0, Math.PI*2);
-      ctx.fillStyle = fur2;
-      ctx.fill();
-      ctx.translate(0, 72);
-      ctx.rotate(0.25 + wave*0.5);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 46, 34, -0.1, 0, Math.PI*2);
-      ctx.fillStyle = fur;
-      ctx.fill();
-      ctx.fillStyle = "rgba(0,0,0,.12)";
-      ctx.beginPath();
-      ctx.ellipse(0, 2, 18, 12, -0.1, 0, Math.PI*2);
-      ctx.fill();
+      ctx.save(); ctx.translate(0,-20);
+      ctx.beginPath(); ctx.ellipse(0,0,165,145,0,0,Math.PI*2); ctx.fillStyle=fur; ctx.fill();
+
+      function ear(x,y,rot){ ctx.save(); ctx.translate(x,y); ctx.rotate(rot); ctx.beginPath(); ctx.ellipse(0,0,56,52,0,0,Math.PI*2); ctx.fillStyle=fur2; ctx.fill(); ctx.beginPath(); ctx.ellipse(6,6,28,24,0,0,Math.PI*2); ctx.fillStyle="rgba(255,255,255,.08)"; ctx.fill(); ctx.restore(); }
+      ear(-105,-95,-.25); ear(105,-95,.25);
+
+      ctx.save(); ctx.translate(0,35);
+      ctx.beginPath(); ctx.ellipse(0,0,95,75,0,0,Math.PI*2); ctx.fillStyle=muzzle; ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0,-12,26,18,0,0,Math.PI*2); ctx.fillStyle=nose; ctx.fill();
+      ctx.strokeStyle="rgba(42,28,22,.85)"; ctx.lineWidth=4; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(-18,10); ctx.quadraticCurveTo(-6,22,0,24); ctx.quadraticCurveTo(6,22,18,10); ctx.stroke();
       ctx.restore();
 
-      // Head
-      ctx.save();
-      ctx.translate(0, -20);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 165, 145, 0, 0, Math.PI*2);
-      ctx.fillStyle = fur;
-      ctx.fill();
+      ctx.fillStyle=cheek;
+      ctx.beginPath(); ctx.ellipse(-70,35,20,14,-.2,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(70,35,20,14,.2,0,Math.PI*2); ctx.fill();
 
-      // Ears
-      function ear(x, y, rot){
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rot);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 56, 52, 0, 0, Math.PI*2);
-        ctx.fillStyle = fur2;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(6, 6, 28, 24, 0, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(255,255,255,.10)";
-        ctx.fill();
+      function eye(x,y){
+        ctx.save(); ctx.translate(x,y);
+        ctx.fillStyle="rgba(255,255,255,.08)"; ctx.beginPath(); ctx.ellipse(0,0,20,18,0,0,Math.PI*2); ctx.fill();
+        ctx.save(); ctx.scale(1,lerp(.08,1,eyeOpen));
+        ctx.fillStyle="#111"; ctx.beginPath(); ctx.ellipse(0,0,7,9,0,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle="rgba(255,255,255,.9)"; ctx.beginPath(); ctx.ellipse(-2,-3,2.2,2.2,0,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+        if(eyeOpen<.35){ ctx.strokeStyle="rgba(0,0,0,.55)"; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(-10,0); ctx.quadraticCurveTo(0,5,10,0); ctx.stroke(); }
         ctx.restore();
       }
-      ear(-105, -95, -0.25);
-      ear(105, -95, 0.25);
+      eye(-55,-18); eye(55,-18);
 
-      // Muzzle
-      ctx.save();
-      ctx.translate(0, 35);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 95, 75, 0, 0, Math.PI*2);
-      ctx.fillStyle = muzzle;
-      ctx.fill();
+      const g=ctx.createRadialGradient(30,-80,10,20,-70,170);
+      g.addColorStop(0,"rgba(255,255,255,.10)"); g.addColorStop(1,"rgba(255,255,255,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(10,-70,120,90,-.2,0,Math.PI*2); ctx.fill();
 
-      // Nose
-      ctx.beginPath();
-      ctx.ellipse(0, -12, 26, 18, 0, 0, Math.PI*2);
-      ctx.fillStyle = nose;
-      ctx.fill();
-
-      // Mouth
-      ctx.strokeStyle = "rgba(42,28,22,.85)";
-      ctx.lineWidth = 4;
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(-18, 10);
-      ctx.quadraticCurveTo(-6, 22, 0, 24);
-      ctx.quadraticCurveTo(6, 22, 18, 10);
-      ctx.stroke();
-      ctx.restore();
-
-      // Cheeks
-      ctx.fillStyle = cheek;
-      ctx.beginPath(); ctx.ellipse(-70, 35, 20, 14, -0.2, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(70, 35, 20, 14, 0.2, 0, Math.PI*2); ctx.fill();
-
-      // Eyes
-      function eye(x, y){
-        ctx.save();
-        ctx.translate(x, y);
-
-        ctx.fillStyle = "rgba(255,255,255,.10)";
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 20, 18, 0, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.save();
-        ctx.scale(1, lerp(0.08, 1, eyeOpen));
-        ctx.fillStyle = "#111";
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 7, 9, 0, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(255,255,255,.9)";
-        ctx.beginPath();
-        ctx.ellipse(-2, -3, 2.2, 2.2, 0, 0, Math.PI*2);
-        ctx.fill();
-        ctx.restore();
-
-        if(eyeOpen < 0.35){
-          ctx.strokeStyle = "rgba(0,0,0,.55)";
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(-10, 0);
-          ctx.quadraticCurveTo(0, 5, 10, 0);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-      eye(-55, -18);
-      eye(55, -18);
-
-      // Forehead shine
-      const g = ctx.createRadialGradient(30, -80, 10, 20, -70, 170);
-      g.addColorStop(0, "rgba(255,255,255,.14)");
-      g.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.ellipse(10, -70, 120, 90, -0.2, 0, Math.PI*2);
-      ctx.fill();
-
-      ctx.restore(); // head
-      ctx.restore(); // body group
+      ctx.restore(); ctx.restore();
     }
 
-    // ==== SPARKLES ====
-    const sparkles = [];
-    function addSparkles(n=18){
-      const W = canvas.getBoundingClientRect().width;
-      const H = canvas.getBoundingClientRect().height;
-      for(let i=0;i<n;i++){
-        sparkles.push({
-          x: lerp(W*0.25, W*0.80, Math.random()),
-          y: lerp(H*0.20, H*0.78, Math.random()),
-          r: lerp(1.2, 3.2, Math.random()),
-          life: lerp(0.6, 1.2, Math.random()),
-          t: 0,
-          spin: lerp(-4, 4, Math.random())
-        });
-      }
+    const sparkles=[];
+    function addSparkles(n=16){
+      const W=canvas.getBoundingClientRect().width, H=canvas.getBoundingClientRect().height;
+      for(let i=0;i<n;i++) sparkles.push({x:lerp(W*.25,W*.80,Math.random()),y:lerp(H*.20,H*.78,Math.random()),r:lerp(1.2,3,Math.random()),life:lerp(.6,1.2,Math.random()),t:0,spin:lerp(-4,4,Math.random())});
     }
-
     function drawSparkles(dt){
       for(let i=sparkles.length-1;i>=0;i--){
-        const s = sparkles[i];
-        s.t += dt;
-        const p = s.t / s.life;
-        if(p >= 1){ sparkles.splice(i,1); continue; }
-        const a = (1 - p) * 0.9;
-
-        ctx.save();
-        ctx.globalAlpha = a;
-        ctx.translate(s.x, s.y);
-        ctx.rotate(s.spin * p);
+        const s=sparkles[i]; s.t+=dt; const p=s.t/s.life;
+        if(p>=1){ sparkles.splice(i,1); continue; }
+        ctx.save(); ctx.globalAlpha=(1-p)*.9; ctx.translate(s.x,s.y); ctx.rotate(s.spin*p);
         ctx.beginPath();
-        for(let k=0;k<8;k++){
-          const ang = (Math.PI*2) * (k/8);
-          const rr = (k%2===0) ? s.r*2.2 : s.r*0.9;
-          ctx.lineTo(Math.cos(ang)*rr, Math.sin(ang)*rr);
-        }
-        ctx.closePath();
-        ctx.fillStyle = "rgba(200,240,255,.9)";
-        ctx.fill();
+        for(let k=0;k<8;k++){ const ang=(Math.PI*2)*(k/8); const rr=(k%2===0)?s.r*2.2:s.r*.9; ctx.lineTo(Math.cos(ang)*rr,Math.sin(ang)*rr); }
+        ctx.closePath(); ctx.fillStyle="rgba(37,99,235,.85)"; ctx.fill();
         ctx.restore();
       }
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha=1;
     }
 
-    // ==== LOOP ====
-    let last = performance.now();
+    let last=performance.now();
     function frame(now){
-      const dt = Math.min(0.033, (now - last)/1000);
-      last = now;
-
-      const rect = canvas.getBoundingClientRect();
-      const W = rect.width;
-      const H = rect.height;
-
-      waveBoost = Math.max(0, waveBoost - dt*0.9);
-      sparkleBoost = Math.max(0, sparkleBoost - dt*0.8);
-
+      const dt=Math.min(.033,(now-last)/1000); last=now;
+      const rect=canvas.getBoundingClientRect(), W=rect.width, H=rect.height;
+      waveBoost=Math.max(0,waveBoost-dt*.9);
+      sparkleBoost=Math.max(0,sparkleBoost-dt*.8);
       ctx.clearRect(0,0,W,H);
 
-      // Floating particles
+      // Light theme: subtle white particle bg; dark: blue tint
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       for(const p of particles){
-        p.phase += dt*p.tw;
-        p.x += p.vx*(1 + 0.5*Math.sin(p.phase));
-        p.y += p.vy*(1 + 0.5*Math.cos(p.phase*0.9));
-
-        if(p.x < -20) p.x = W+20;
-        if(p.x > W+20) p.x = -20;
-        if(p.y < -20) p.y = H+20;
-        if(p.y > H+20) p.y = -20;
-
-        const pulse = 0.5 + 0.5*Math.sin(p.phase);
-        ctx.globalAlpha = p.a * (0.65 + 0.35*pulse);
-        ctx.beginPath();
-        ctx.ellipse(p.x, p.y, p.r*(0.9+0.25*pulse), p.r*(0.9+0.25*(1-pulse)), 0, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(180,220,255,1)";
+        p.phase+=dt*p.tw; p.x+=p.vx*(1+.5*Math.sin(p.phase)); p.y+=p.vy*(1+.5*Math.cos(p.phase*.9));
+        if(p.x<-20)p.x=W+20; if(p.x>W+20)p.x=-20; if(p.y<-20)p.y=H+20; if(p.y>H+20)p.y=-20;
+        const pulse=.5+.5*Math.sin(p.phase);
+        ctx.globalAlpha=p.a*(.65+.35*pulse);
+        ctx.beginPath(); ctx.ellipse(p.x,p.y,p.r*(.9+.25*pulse),p.r*(.9+.25*(1-pulse)),0,0,Math.PI*2);
+        ctx.fillStyle=isDark?"rgba(96,165,250,1)":"rgba(37,99,235,.5)";
         ctx.fill();
       }
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha=1;
 
-      if(sparkleBoost > 0 && Math.random() < 0.35) addSparkles(2);
-
-      drawBear(now/1000, W, H);
+      if(sparkleBoost>0&&Math.random()<.35) addSparkles(2);
+      drawBear(now/1000,W,H);
       drawSparkles(dt);
-
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', function(e){
+      if(e.key==='Enter') window.location.href='https://mstfgkcaydin.github.io';
+    });
   </script>
 </body>
 </html>
